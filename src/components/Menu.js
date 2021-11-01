@@ -11,6 +11,7 @@ import Post from '../screens/Post';
 import Profile from '../screens/Profile';
 import Register from '../screens/Register';
 import Search from '../screens/Search'
+import { ActivityIndicator } from 'react-native';
 
 
 const Drawer = createDrawerNavigator();
@@ -21,7 +22,8 @@ class Menu extends Component {
         this.state= {
             loggedIn: false,
             error: '',
-            userData: {}
+            userData: {}, 
+            loading: true,
         };
     }
 
@@ -30,10 +32,12 @@ class Menu extends Component {
             if (user !== null) {
                 this.setState({
                     loggedIn: true,
+                    loading: false
                 })
             } else{
                 this.setState({
                     loggedIn: false,
+                    loading: true,
                 })
             }
         })
@@ -72,26 +76,43 @@ class Menu extends Component {
         })
     }
 
-render() {
-        return(
+    signOut(){
+        auth
+        .signOut()
+        .then((userData) => {
+            this.setState({
+                loggedIn: false, 
+            })
+        })
+        .catch((err) => {
+            this.setState({
+                error: err.message
+            })
+        })
+    }
+
+    render() {
+        return(  
             <NavigationContainer>
                 <Drawer.Navigator> 
                     {(this.state.loggedIn === false) ? (
-                    <>
-                        <Drawer.Screen name="Login" component={() => <Login  error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
-                        <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, pass) => this.register(email,pass)} />} />
-                    </>
-                    ) : (
-                    <>
-                        <Drawer.Screen name="Home" component={()=><Home />} />
-                        <Drawer.Screen name="Post" component={()=><Post />} />
-                        <Drawer.Screen name="Profile" component={()=><Profile />} />
-                        <Drawer.Screen name="Search" component={()=><Search />} />
-                    </>
-                    ) }
-                </Drawer.Navigator>
+                        <>
+                            <Drawer.Screen name="Login" component={() => <Login  error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
+                            <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, pass) => this.register(email,pass)} />} />
+                        </>
+                        ) : (
+                        <>
+                            <Drawer.Screen name="Home" component={()=><Home loading={this.state.loading} />} />
+                            <Drawer.Screen name="Post" component={()=><Post />} />
+                            <Drawer.Screen name="Profile" component={()=><Profile userData={this.state.userData} signOut ={() => this.signOut() }/>}/>
+                            <Drawer.Screen name="Search" component={()=><Search />} />
+                        </>
+                    )}
+                </Drawer.Navigator> 
             </NavigationContainer> 
         );
-    }
+    } 
 }
+
+
 export default Menu;

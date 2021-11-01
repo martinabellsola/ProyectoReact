@@ -1,57 +1,51 @@
 import React, {Component} from 'react';
-import {
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    FlatList
-  } from "react-native";
-
-import { db } from '../firebase/config';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 
 class Register extends Component {
-    constructor(){
-        super();
-        this.state= {
-           email: '',
-           password: '',
-           user: '',
-        };
+  constructor(){
+    super();
+    this.state= {
+      email: '',
+      password: '',
+      user: '',
     }
+  }
 
-render() {
+  render() {
     return (
-        <View>
-          <Text> {this.props.error} </Text>
-          <TextInput
-            onChangeText={(text) => this.setState({ user: text })}
-            placeholder="User name"
-            keyboardType="default"
-          />
-          <TextInput
-            onChangeText={(text) => this.setState({ email: text },()=> console.log(this.state.email) )}  
-            placeholder="email"
-            keyboardType="email-address"
-          />
-          <TextInput
-            onChangeText={(text) => this.setState({ password: text })}
-            placeholder="password"
-            keyboardType="default"
-            secureTextEntry={true}
-          />
+      <View>
+        <Text> {this.props.error} </Text>
+        <TextInput
+          onChangeText={(text) => this.setState({ user: text })}
+          placeholder="User name"
+          keyboardType="default"
+        />
+        <TextInput
+          onChangeText={(text) => this.setState({ email: text },()=> console.log(this.state.email) )}  
+          placeholder="email"
+          keyboardType="email-address"
+        />
+        <TextInput
+          onChangeText={(text) => this.setState({ password: text })}
+          placeholder="password"
+          keyboardType="default"
+          secureTextEntry={true}
+        />
 
-          { (this.state.email !== " ") ? 
-          (<TouchableOpacity
-          style={styles.button}
-          onPress={() => this.props.register(this.state.email, this.state.password)}
-        >
-          <Text style={styles.textButton}>Registrar</Text>
-        </TouchableOpacity> ) : (<TouchableOpacity
-          style={styles.deshabilitado}
-        >
-          <Text style={styles.textButton}>Registrar</Text>
-        </TouchableOpacity> ) } 
+        {(this.state.email !== ''&& this.state.user !== '' && this.state.password !== '') ? (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.props.register(this.state.email, this.state.password)}
+          >
+            <Text style={styles.textButton}>Registrar</Text>
+          </TouchableOpacity>
+          ):(
+          <TouchableOpacity
+            style={styles.deshabilitado}
+          >
+            <Text style={styles.textButton}>Registrar</Text>
+          </TouchableOpacity> 
+        )} 
         </View>
       );
     }

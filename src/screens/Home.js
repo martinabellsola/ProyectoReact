@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    FlatList
-  } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { db } from '../firebase/config';
 
 class Home extends Component {
@@ -19,12 +12,10 @@ class Home extends Component {
 
 
 
-render() {
-    return(
-            
-        <View>
-         
-        </View>
+    render() {
+        return(
+            <View>
+            </View>
 
         );
     }
