@@ -36,6 +36,7 @@ class Menu extends Component {
             } else{
                 this.setState({
                     loggedIn: false,
+                    loading: false,
                 })
             }
         })
@@ -81,7 +82,7 @@ class Menu extends Component {
             this.setState({
                 loggedIn: false, 
                 loading: false,
-            }, () => console.log(this.state.loading))
+            })
         })
         .catch((err) => {
             this.setState({
@@ -92,9 +93,9 @@ class Menu extends Component {
 
     render() {
         return( 
-          /*  (this.state.loading === false) ? (
+            (this.state.loading === true) ? (
                 <ActivityIndicator size="large" color="purple"/> 
-            ):(*/
+            ):(
                 <NavigationContainer>
                     <Drawer.Navigator> 
                     {(this.state.loggedIn === false) ? (
@@ -112,7 +113,7 @@ class Menu extends Component {
                     )}
                     </Drawer.Navigator> 
                 </NavigationContainer> 
-           /* ) */
+            )
         );
     } 
 }

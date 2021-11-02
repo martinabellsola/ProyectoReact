@@ -22,7 +22,7 @@ class Profile extends Component{
               style={styles.button}
               onPress={() => this.props.signOut()}
             >
-                <Text style={styles.textButton}> Cerrar sesión </Text>
+              <Text style={styles.textButton}> Cerrar sesión </Text>
             </TouchableOpacity>
           </View>
         );
@@ -30,19 +30,22 @@ class Profile extends Component{
 }
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: "red",
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        textAlign: "center",
-        borderRadius: 4,
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderColor: "red",
-    },
-    textButton: {
-        color: "#fff",
-    },
+  
+  button: {
+    backgroundColor: "red",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    textAlign: "center",
+    borderRadius: 4,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "red",
+  },
+  
+  textButton: {
+    color: "#fff",
+  },
+
 });
     
 export default Profile;
