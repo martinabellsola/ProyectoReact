@@ -106,7 +106,7 @@ class Menu extends Component {
                         ) : (
                         <>
                             <Drawer.Screen name="Home" component={()=><Home loading={this.state.loading} />} />
-                            <Drawer.Screen name="Post" component={()=><Post />} />
+                            <Drawer.Screen name="Post" component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
                             <Drawer.Screen name="Profile" component={()=><Profile userData={this.state.userData} signOut ={() => this.signOut() }/>}/>
                             <Drawer.Screen name="Search" component={()=><Search />} />
                         </>

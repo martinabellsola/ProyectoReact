@@ -17,7 +17,6 @@ class Post extends Component {
             username:"",
             comments:[],
             likes:[],
-            posted:false,
         };
     }
 submitPost(){
@@ -31,8 +30,8 @@ submitPost(){
         .then(() => {
             this.setState({
                 description: "",
-                posted: true,
             })
+            this.props.drawerProps.navigation.navigate("Home")
         })
         .catch((err) => {
            console.log(err)
@@ -44,7 +43,6 @@ render() {
     return (
         <View style={styles.formContainer}>
           <Text> Nuevo Post </Text>
-          {(this.state.posted)?<Text>¡Tu posteo se ha realizado satisfactoriamente!</Text>:""}
           <TextInput
             onChangeText={(text) => this.setState({ description: text })}
             placeholder="Descripción"
