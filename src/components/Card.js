@@ -12,19 +12,55 @@ class Post extends Component {
         comments:[]
       }
     }  
+    
+    componentDidMount(){
+      this.recieveLikes();
+    }
+
+    recieveLikes(){
+      let likes = this.props.post.likes;
+
+      if(likes) {
+        this.setState({
+          likes: likes.length
+        })
+      }
+
+      if(likes.includes(auth.currentUser.email + ", ")){
+        this.setState({
+          liked:true
+        })
+      }
+    }
+    
     like(id){
-        db.collection("posteos").doc(id).update({
-        likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
-      })  
+      db.collection("posteos").doc(id).update({
+        likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email + ", ")
+      }).then(()=>{
+        this.setState({
+        liked: true,
+        likes: this.state.likes + 1, 
+      })})
+      .catch((err)=> {
+        console.log(err)
+      })
+      
     };
+
     dislike(id){
       db.collection("posteos").doc(id).update({
-        likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
-    })  
+        likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email + ", ")
+      }).then(()=>{
+        this.setState({
+        liked: false,
+        likes: this.state.likes - 1, 
+      })})
+      .catch((err)=> {
+        console.log(err)
+      })  
+      
     };
 
-
-    //hace falta cargar quien carajo hizo el like y quien el dislike
   
     render() {
       return (
@@ -33,13 +69,22 @@ class Post extends Component {
           <Text>Usuario: {this.props.post.username}</Text>
           <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
           <Text>Usuarios que likearon: {this.props.post.likes}</Text>
-          <TouchableOpacity style={styles.button} onPress={() => this.dislike(this.props.id)}> <Text style={styles.textButton}> Dislike </Text> </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.like(this.props.id)}> <Text style={styles.textButton}>Like</Text> </TouchableOpacity> 
+          {
+            ! (this.state.liked) ?  
+              (<TouchableOpacity style={styles.button} onPress={() => this.like(this.props.id)}> 
+                <Text style={styles.textButton}>Like</Text> 
+              </TouchableOpacity>) 
+            : 
+              (<TouchableOpacity style={styles.button} onPress={() => this.dislike(this.props.id)}> 
+                <Text style={styles.textButton}> Dislike </Text> 
+              </TouchableOpacity>)
+          }
         </View>
       );
     }    
        
   }
+
   const styles = StyleSheet.create({
     button: {
       backgroundColor: "#28A745",

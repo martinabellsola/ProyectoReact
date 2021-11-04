@@ -28,9 +28,11 @@ submitPost(){
             comments: [],
         })
         .then(() => {
+            
             this.setState({
                 description: "",
             })
+
             this.props.drawerProps.navigation.navigate("Home")
         })
         .catch((err) => {
