@@ -14,8 +14,8 @@ class myCamera extends Component {
     this.camera;
 }
 
-    componentDidMount(){
-        Camera.requestCameraPermissionsAsync()
+componentDidMount(){
+    Camera.requestCameraPermissionsAsync()
         .then(()=> {
             this.setState({
                 permission:true
@@ -23,12 +23,12 @@ class myCamera extends Component {
         })
         .catch((err) => console.log(err))
 
-        Camera.getAvailableCameraTypesAsync()
+    Camera.getAvailableCameraTypesAsync()
         .then((res)=> console.log(res) )
-    }
+}
 
-    takePicture(){
-        this.camera
+takePicture(){
+    this.camera
         .takePictureAsync()
         .then((photo)=> {
             console.log(photo);
@@ -57,20 +57,18 @@ class myCamera extends Component {
                                  this .setState({
                                      photo: " "
                                 })
-                    }) 
+                            }) 
     
+                    })
             })
-        })
-        .catch((err)=> console.log(err))
-        
-        
+        .catch((err)=> console.log(err)) 
     }
     
     
 render() {
         return(
             <>
-            {this.state.photo ? (
+            {(this.state.photo) ? (
                 <>
                 <Image 
                 style={{width: "100%"}}
@@ -89,7 +87,7 @@ render() {
                <>
                <Camera 
                     style={{flex: 1, width:'100%'}}
-                    type={camera.constats.Type.front}
+                    type={Camera.Constants.Type.front}
                     ref= {(cam)=> (this.camera = cam)} // el cam puede ser cualquier nombre y debe cooincidir con el otro.
                 />
                 <TouchableOpacity onPress={()=> this.takePicture()}>
