@@ -1,7 +1,9 @@
 import React, {Component} from 'react'; 
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image, Modal } from "react-native";
 import { db, auth, } from "../firebase/config";
 import firebase from 'firebase';
+import Comments from '../components/Comments'
+
 
 class Post extends Component {
     constructor(props) {
@@ -10,7 +12,9 @@ class Post extends Component {
         loading: true,
         likes: 0,
         liked: false,
-        comments:[]
+        comments:[],
+        showModal: false,
+        modalText:'Ver comentarios'
       }
     }  
     
@@ -62,7 +66,20 @@ class Post extends Component {
       
     };
 
-  
+   comment(com){
+     console.log(com)
+    let comentario = {text: com, user: auth.currentUser, date: Date.now()}
+    db.collection("posteos").doc(this.props.id).update({
+      comment: firebase.firestore.FieldValue.arrayUnion(comentario)
+    }).then(()=>{
+      this.setState({
+       comments: this.state.comments.push(comentario)
+      })})
+      .catch((err)=> {
+        console.log(err)
+      })  
+   
+  }
     render() {
       return (
         <View style={styles.formContainer}>
@@ -81,6 +98,7 @@ class Post extends Component {
                 <Text style={styles.textButton}> Dislike </Text> 
               </TouchableOpacity>)
           }
+          <Comments comentar= {(com)=>this.comment(com)}/>
         </View>
       );
     }    
