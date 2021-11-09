@@ -1,7 +1,8 @@
 import React, {Component} from 'react'; 
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
 import { db, auth, } from "../firebase/config";
 import firebase from 'firebase';
+
 class Post extends Component {
     constructor(props) {
       super(props);
@@ -65,6 +66,7 @@ class Post extends Component {
     render() {
       return (
         <View style={styles.formContainer}>
+          <Image style={styles.photo} source={{uri:this.props.post.photo}}/>
           <Text>Descripción: {this.props.post.description}</Text>
           <Text>Usuario: {this.props.post.username}</Text>
           <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
@@ -109,5 +111,9 @@ class Post extends Component {
       borderRadius: 6,
       marginVertical:10,
   },
+    photo:{
+      height: 200,
+    }
   });
+
 export default Post

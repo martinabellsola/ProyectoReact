@@ -11,68 +11,73 @@ import { db, auth } from '../firebase/config';
 import MyCamera from '../components/MyCamera'
 
 class Post extends Component {
-    constructor(){
-        super();
-        this.state= {
-            description:"",
-            username:"",
-            comments:[],
-            likes:[],
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: '',
+            description: '', 
             showCamera: true,
-        };
+        }
+        console.log(this.props);
+        
     }
 
-submitPost(){
-        db.collection("posteos").add({
-            username: auth.currentUser.email,
-            description: this.state.description,
+    submitPost() {
+        db.collection('posteos').add({
+            user: auth.currentUser.email,
             createdAt: Date.now(),
+            title: this.state.title,
+            description: this.state.description,
             likes: [],
-            comments: [],
+            comments: [], 
             photo: this.state.url
         })
-        .then(() => {
-            
-            this.setState({
-                description: "",
+            .then(() => {
+                console.log('Se posteo exitosamente');
+                this.setState({
+                    title: '',
+                    description: ''
+                })
+                this.props.drawerProps.navigation.navigate("Home")
             })
-
-            this.props.drawerProps.navigation.navigate("Home")
-        })
-        .catch((err) => {
-           console.log(err)
-        })
+            .catch(err => console.log(err))
     }
 
- onImageUpload(url){
-    this.setState({
-         url: url,
-        showCamera: false,
-    })
-}
+    onImageUpload(url){
+      this.setState({
+        url: url, 
+        showCamera: false
+      })
+    }
 
-render() {
-    return (
-       (this.state.showCamera) ? (
-            <MyCamera onImageUpload={(url)=>this.onImageUpload(url) } /> ) : (
-        <View style={styles.formContainer}>
-          <Text> Nuevo Post </Text>
-          <TextInput
-            onChangeText={(text) => this.setState({ description: text })}
-            placeholder="Descripción"
-            keyboardType="default"
-            value={this.state.description}
-            multiline
-            style={styles.multilineInput}
-          />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.submitPost()}
-          >
-            <Text style={styles.textButton}> Postear </Text>
-          </TouchableOpacity>
-        </View>
-    ));
+    render() {
+        return (
+          (this.state.showCamera) ? 
+            (<MyCamera onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps} />) :  
+            (<View style={styles.formContainer}>  
+                <TextInput 
+                    style={styles.input}
+                    placeholder="Título"
+                    keyboardType="default"
+                    onChangeText={ text => this.setState({ title: text }) }
+                    value={this.state.title}
+                />
+                <TextInput 
+                    style={styles.input}
+                    placeholder="Descripción"
+                    keyboardType="default"
+                    onChangeText={ text => this.setState({ description: text }) }
+                    value={this.state.description}
+                    multiline={true}
+                />
+
+                <TouchableOpacity style={styles.button} onPress={() => this.submitPost()}>
+                    <Text style={styles.textButton}>
+                        Postear
+                    </Text>
+                </TouchableOpacity>
+            </View>)
+        )
     }
 }
 

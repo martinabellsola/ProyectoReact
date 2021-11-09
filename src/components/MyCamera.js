@@ -5,98 +5,103 @@ import firebase from 'firebase';
 import { Camera } from 'expo-camera'
 
 class myCamera extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        permission: false,
-        photo: " ",
+    constructor(props){
+        super(props); 
+        this.state = {
+            permission: false, 
+            photo: "",
+        }
+        this.camera;
     }
-    this.camera;
-}
-
-componentDidMount(){
-    Camera.requestCameraPermissionsAsync()
-        .then(()=> {
+    
+    componentDidMount(){
+        Camera.requestCameraPermissionsAsync()
+        .then(()=>{
             this.setState({
-                permission:true
+                permission: true
             })
         })
-        .catch((err) => console.log(err))
+        .catch((err)=> console.log(err))
 
-    Camera.getAvailableCameraTypesAsync()
-        .then((res)=> console.log(res) )
-}
-
-takePicture(){
-    this.camera
-        .takePictureAsync()
-        .then((photo)=> {
-            console.log(photo);
-                
-            this.setState({
-                photo: photo.uri, 
-             })
-         })
-        .catch((err) => console.log(err))
+        Camera.getAvailableCameraTypesAsync()
+        .then((res)=> console.log(res))
     }
     
     savePhoto(){
-        console.log("guardar foto en firebase");
-    
         fetch(this.state.photo)
         .then((res)=> res.blob())
             .then((image)=> {
-                const ref = storage.ref(`photos/${Date.now()}.jpg`);
-    
-                ref.put(image)
-                    .then(()=> {
-                        ref
-                        .getDownloadURL()
-                            .then((url)=> {
-                                 this.props.onImageUpload(url) //guardar imagen en la base de datos. La primera url, se la estamos pasando al componente padre
-                                 this .setState({
-                                     photo: " "
-                                })
-                            }) 
-    
+                const ref = storage.ref(`photos/${Date.now()}.jpg`) //no existe pero te lo crea 
+                ref.put(image) //metodo put de firebase
+                .then(()=> {
+                    ref.getDownloadURL() 
+                    .then((url)=> {
+                        this.props.onImageUpload(url)
+                        this.setState({
+                            photo: ""
+                        })
                     })
-            })
-        .catch((err)=> console.log(err)) 
+                })
+            }) 
+            
+        .catch(err => console.log(err))
+        
     }
+   
+
+    takePicture(){
+        this.camera
+            .takePictureAsync()
+                .then((photo)=>{
+                    this.setState({
+                        photo: photo.uri,
+                    })
+                })
+                .catch((err)=> console.log(err))
+    }
+
+    cancelar(){
+    console.log("se esta ejecutando la funcion");
     
-    
-render() {
-        return(
-            <>
-            {(this.state.photo) ? (
-                <>
-                <Image 
-                style={{width: "100%"}}
-                source= {{uri: this.state.photo}}
-                />
-                <View>
-                    <TouchableOpacity onPress={()=> this.savePhoto()}>
-                        <Text>Aceptar</Text>
+        this.props.drawerProps.navigation.navigate("Home")
+    }
+   
+
+    render(){
+        return (
+            <> 
+                {this.state.photo ? 
+                    <>
+                     <Image 
+                        style={{width: "100%"}}
+                        source = {{uri:this.state.photo}}
+                     />
+                     <View>
+                         <TouchableOpacity onPress={()=>this.savePhoto()}>
+                             <Text> Aceptar </Text>
+                         </TouchableOpacity>
+                         <TouchableOpacity onPress={()=> this.cancelar()}>
+                             <Text> Cancelar </Text>
+                         </TouchableOpacity>
+                     </View>
+                    </>
+                : 
+                    <>
+                    <Camera 
+                        style={{flex: 2, width:"100%"}}
+                        type={Camera.Constants.Type.front}
+                        ref={(cam)=> (this.camera = cam)}
+                    /> 
+                    
+                    <TouchableOpacity  style={{flex: 1, width:"100%"}} onPress={()=> this.takePicture()}>    
+                        <Text>Shoot</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text>Cancelar</Text>
-                    </TouchableOpacity>
-                </View>
-                </>
-            ) : (
-               <>
-               <Camera 
-                    style={{flex: 1, width:'100%'}}
-                    type={Camera.Constants.Type.front}
-                    ref= {(cam)=> (this.camera = cam)} // el cam puede ser cualquier nombre y debe cooincidir con el otro.
-                />
-                <TouchableOpacity onPress={()=> this.takePicture()}>
-                    <Text>Shoot</Text>
-                </TouchableOpacity>
-                </>
-            )}
-            </>    
-        );
+                    </>
+                }
+                 
+                
+            </>
+        )
     }
 }
 

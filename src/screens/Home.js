@@ -18,7 +18,7 @@ class Home extends Component {
   }
 
   showPost(){
-    db.collection("posteos").onSnapshot( docs => {
+    db.collection("posteos").orderBy('createdAt', 'desc').onSnapshot( docs => {
       let post = []
       docs.forEach((doc) => {
         post.push({
@@ -41,7 +41,7 @@ class Home extends Component {
             data={this.state.post}
             keyExtractor={(post) => post.id.toString()}
             renderItem={({item}) => (
-              <Card post={item.data} id={item.id} />
+              <Card post={item.data} id={item.id} photo={item.photo} />
             )}
           />}
       </View>

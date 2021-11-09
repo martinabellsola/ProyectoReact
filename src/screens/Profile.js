@@ -9,12 +9,15 @@ class Profile extends Component{
       this.state = { 
 
       }  
+      console.log(auth.currentUser);
     }
 
   
     render() {
         return (
           <View>
+            
+            <Text> Nombre usuario: </Text>
             <Text> Email usuario: {auth.currentUser.email} </Text>
             <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
             <Text> Última sesión: {auth.currentUser.metadata.lastSignInTime} </Text>
