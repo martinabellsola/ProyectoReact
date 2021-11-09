@@ -8,6 +8,7 @@ import {
     FlatList
   } from "react-native";
 import { db, auth } from '../firebase/config';
+import MyCamera from '../components/MyCamera'
 
 class Post extends Component {
     constructor(){
@@ -17,8 +18,10 @@ class Post extends Component {
             username:"",
             comments:[],
             likes:[],
+            showCamera: true,
         };
     }
+
 submitPost(){
         db.collection("posteos").add({
             username: auth.currentUser.email,
@@ -26,6 +29,7 @@ submitPost(){
             createdAt: Date.now(),
             likes: [],
             comments: [],
+            photo: this.state.url
         })
         .then(() => {
             
@@ -40,9 +44,17 @@ submitPost(){
         })
     }
 
+ onImageUpload(url){
+    this.setState({
+         url: url,
+        showCamera: false,
+    })
+}
 
 render() {
     return (
+       (this.state.showCamera) ? (
+            <MyCamera onImageUpload={(url)=>this.onImageUpload(url) } /> ) : (
         <View style={styles.formContainer}>
           <Text> Nuevo Post </Text>
           <TextInput
@@ -60,7 +72,7 @@ render() {
             <Text style={styles.textButton}> Postear </Text>
           </TouchableOpacity>
         </View>
-      );
+    ));
     }
 }
 
