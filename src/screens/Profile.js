@@ -1,22 +1,40 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, } from "react-native";
-import { auth } from "../firebase/config";
-
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList} from "react-native";
+import { auth, db } from "../firebase/config";
+import ProfileCard from '../components/ProfileCard'
 class Profile extends Component{
-    
     constructor(props) {
       super(props);
-      this.state = { 
-
-      }  
+      this.state = {
+        post: [],
+        loading: true
+      }
       console.log(auth.currentUser);
     }
-
-  
+    componentDidMount(){
+      this.showPost();
+    }
+    showPost(){
+      db.collection("posteos").where('user', '==', auth.currentUser.email).orderBy('createdAt', 'desc').onSnapshot( docs => {
+        let post = []
+        docs.forEach((doc) => {
+          post.push({
+            data: doc.data(),
+            id: doc.id,
+          })
+        })
+        this.setState({
+          post: post,
+          loading: false,
+        }, ()=> console.log(this.state.post)
+        )
+      })
+    }
     render() {
         return (
           <View>
-            
+            {(this.state.loading === true) ? <ActivityIndicator size="large" color="pink" /> :
+            <>
             <Text> Nombre usuario: </Text>
             <Text> Email usuario: {auth.currentUser.email} </Text>
             <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
@@ -27,13 +45,18 @@ class Profile extends Component{
             >
               <Text style={styles.textButton}> Cerrar sesión </Text>
             </TouchableOpacity>
+             <FlatList
+               data={this.state.post}
+               keyExtractor={(post) => post.id.toString()}
+               renderItem={({item}) => (
+                 <ProfileCard post={item.data} id={item.id} photo={item.photo} />
+               )}
+             />   </> }
           </View>
         );
       }
 }
-
 const styles = StyleSheet.create({
-  
   button: {
     backgroundColor: "red",
     paddingHorizontal: 10,
@@ -44,11 +67,8 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "red",
   },
-  
   textButton: {
     color: "#fff",
   },
-
 });
-    
 export default Profile;
