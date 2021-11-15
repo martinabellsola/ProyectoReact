@@ -13,8 +13,8 @@ class Post extends Component {
         likes: 0,
         liked: false,
         comments:[],
-        showModal: false,
-        modalText:'Ver comentarios'
+        showModalComents: false,
+        showModalLikes: false,
       }
     }  
     
@@ -68,26 +68,63 @@ class Post extends Component {
 
    comment(com){
      console.log(com)
-    let comentario = {text: com, user: auth.currentUser, date: Date.now()}
+    let comentario = {text: com, user: auth.currentUser.email, date: Date.now()}
+    console.log(comentario);
+    
     db.collection("posteos").doc(this.props.id).update({
-      comment: firebase.firestore.FieldValue.arrayUnion(comentario)
+      comments: firebase.firestore.FieldValue.arrayUnion(comentario)
     }).then(()=>{
+      let ArrayComentarios = this.state.comments
+      ArrayComentarios.push(comentario)
       this.setState({
-       comments: this.state.comments.push(comentario)
-      })})
+       comments: ArrayComentarios
+      })
+    })
       .catch((err)=> {
         console.log(err)
       })  
-   
   }
+
+openModalLikes() {
+    this.setState({
+      showModalLikes: true
+    })
+}
+
+closeModalLikes() {
+  this.setState({
+    showModalLikes: false
+  })
+}
+
+openModalComents() {
+    this.setState({
+      showModalComents: true
+    })
+}
+
+closeModalComents() {
+    this.setState({
+      showModalComents: false
+    })
+}
+
+
+
     render() {
+      console.log(this.props.post.comments);
+      
       return (
         <View style={styles.formContainer}>
           <Image style={styles.photo} source={{uri:this.props.post.photo}}/>
           <Text>Descripción: {this.props.post.description}</Text>
           <Text>Usuario: {this.props.post.username}</Text>
+          <TouchableOpacity onPress={() => this.openModalLikes()}>
           <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
-          <Text>Usuarios que likearon: {this.props.post.likes}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.openModalComents()}>
+      <Text>Comentarios: {this.props.post.comments.length} </Text>
+          </TouchableOpacity>
           {
             ! (this.state.liked) ?  
               (<TouchableOpacity style={styles.button} onPress={() => this.like(this.props.id)}> 
@@ -98,8 +135,41 @@ class Post extends Component {
                 <Text style={styles.textButton}> Dislike </Text> 
               </TouchableOpacity>)
           }
-          <Comments comentar= {(com)=>this.comment(com)}/>
+          {
+           ! this.state.showModalComents ? 
+                        null
+                    :
+                        <Modal 
+                            style={styles.modalContainer}
+                            visible={this.state.showModalComents}
+                            animationType="slide"
+                            transparent={false}
+                        >
+                            <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
+                            <Text> X </Text>
+                            </TouchableOpacity>
+                            <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
+                        </Modal>
+                }
+          {
+           ! this.state.showModalLikes ? 
+                        null
+                    :
+                        <Modal 
+                            style={styles.modalContainer}
+                            visible={this.state.showModalLikes}
+                            animationType="slide"
+                            transparent={false}
+                        >
+                            <TouchableOpacity onPress={() => this.closeModalLikes()} style={styles.closeModal}>
+                            <Text> X </Text>
+                            </TouchableOpacity>
+                           <Text>Usuarios que likearon: {this.props.post.likes}</Text>
+                        </Modal>
+                }
         </View>
+        
+        
       );
     }    
        
@@ -131,7 +201,25 @@ class Post extends Component {
   },
     photo:{
       height: 200,
-    }
+    },
+    modalContainer: {
+      width:'100%',  
+      flex: 3,
+      alignSelf: 'center',
+      backgroundColor: "white",
+      borderColor: '#000000',
+      borderRadius: 6,
+      padding: 10,
+      backgroundColor: '#000000'
+  },
+  closeModal:{
+    alignSelf: 'flex-end',
+    padding: 10,
+    backgroundColor: '#dc3545',
+    marginTop:2,
+    borderRadius: 4,
+},
+
   });
 
 export default Post
