@@ -3,18 +3,21 @@ import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator,
 import { auth, db } from "../firebase/config";
 import Card from '../components/Card'
 class Profile extends Component{
-    constructor(props) {
+    
+  constructor(props) {
       super(props);
       this.state = {
         post: [],
         loading: true
       }
     }
+
     componentDidMount(){
       this.showPost();
     }
+    
     showPost(){
-      db.collection("posteos").where('user', '==', auth.currentUser.email).onSnapshot( docs => {
+      db.collection("posteos").where('mail', '==', auth.currentUser.email).onSnapshot( docs => {
         let post = []
         docs.forEach((doc) => {
           post.push({
@@ -25,10 +28,10 @@ class Profile extends Component{
         this.setState({
           post: post,
           loading: false,
-        }, ()=> console.log(this.state.post)
-        )
+        })
       })
     }
+    
     render() {
         return (
           <View>

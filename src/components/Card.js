@@ -62,11 +62,11 @@ class Post extends Component {
     })  
   };
 
- comment(com){
-  let comentario = {text: com, user: auth.currentUser.email, date: Date.now()}
-  db.collection("posteos").doc(this.props.id).update({
-    comments: firebase.firestore.FieldValue.arrayUnion(comentario)
-  }).then(()=>{
+  comment(com){
+    let comentario = {text: com, user: auth.currentUser.email, date: Date.now()}
+    db.collection("posteos").doc(this.props.id).update({
+      comments: firebase.firestore.FieldValue.arrayUnion(comentario)
+    }).then(()=>{
     let ArrayComentarios = this.state.comments
     ArrayComentarios.push(comentario)
     this.setState({
@@ -84,9 +84,9 @@ class Post extends Component {
   }
 
   closeModalLikes() {
-  this.setState({
-    showModalLikes: false
-  })
+    this.setState({
+      showModalLikes: false
+    })
   }
 
   openModalComents() {
@@ -129,7 +129,7 @@ class Post extends Component {
                   <Text>X</Text>
                 </TouchableOpacity>
                 <Text>Descripción: {this.props.post.description}</Text>
-                <Text>Usuario: {auth.currentUser.displayName} </Text>
+                <Text>Usuario: {this.props.post.user} </Text>
                 <TouchableOpacity onPress={() => this.openModalLikes()}>
                 <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
                 </TouchableOpacity>
@@ -196,7 +196,7 @@ class Post extends Component {
                       </Modal>
               }
         </>):(<><Text>Descripción: {this.props.post.description}</Text>
-        <Text> Usuario: {this.props.post.user} </Text>
+          <Text>Usuario: {this.props.post.user} </Text>
         <Text> Mail: {this.props.post.mail} </Text>
         <TouchableOpacity onPress={() => this.openModalLikes()}>
         <Text>Cantidad de likes: {this.props.post.likes.length}</Text>

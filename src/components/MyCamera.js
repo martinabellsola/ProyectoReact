@@ -61,8 +61,6 @@ class myCamera extends Component {
     }
 
     cancelar(){
-    console.log("se esta ejecutando la funcion");
-    
         this.props.drawerProps.navigation.navigate("Home")
     }
    
