@@ -9,7 +9,6 @@ class Profile extends Component{
         post: [],
         loading: true
       }
-      console.log(auth.currentUser);
     }
     componentDidMount(){
       this.showPost();
@@ -35,7 +34,7 @@ class Profile extends Component{
           <View>
             {(this.state.loading === true) ? <ActivityIndicator size="large" color="pink" /> :
             <>
-            <Text> Nombre usuario: </Text>
+            <Text> Nombre usuario: {auth.currentUser.displayName} </Text>
             <Text> Email usuario: {auth.currentUser.email} </Text>
             <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
             <Text> Última sesión: {auth.currentUser.metadata.lastSignInTime} </Text>

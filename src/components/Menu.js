@@ -43,10 +43,14 @@ class Menu extends Component {
     }
 
 
-    register(email, password) {
+    register(email, userName, password) {
         auth
         .createUserWithEmailAndPassword(email, password)
         .then((userData) => {
+            userData.user.updateProfile({
+                displayName: userName
+            })
+        }).then((userData)=>{
             this.setState({
                 loggedIn: true,
                 userData: userData.user, 
@@ -101,13 +105,13 @@ class Menu extends Component {
                     {(this.state.loggedIn === false) ? (
                         <>
                             <Drawer.Screen name="Login" component={() => <Login  error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
-                            <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, pass) => this.register(email,pass)} />} />
+                            <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, userName, pass) => this.register(email, userName, pass)} />} />
                         </>
                         ) : (
                         <>
                             <Drawer.Screen name="Home" component={()=><Home loading={this.state.loading} />} />
                             <Drawer.Screen name="Post" component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
-                            <Drawer.Screen name="Profile" component={()=><Profile userData={this.state.userData} signOut ={() => this.signOut() }/>}/>
+                            <Drawer.Screen name="Profile" component={()=><Profile signOut ={() => this.signOut() }/>}/>
                             <Drawer.Screen name="Search" component={()=><Search />} />
                         </>
                     )}

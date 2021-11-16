@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    FlatList
-  } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList} from "react-native";
 import { db } from '../firebase/config';
 
 class Search extends Component {
@@ -16,7 +9,6 @@ class Search extends Component {
            
         };
     }
-
 
 
 render() {

@@ -129,7 +129,7 @@ class Post extends Component {
                   <Text>X</Text>
                 </TouchableOpacity>
                 <Text>Descripción: {this.props.post.description}</Text>
-                <Text>Usuario: {this.props.post.username}</Text>
+                <Text>Usuario: {auth.currentUser.displayName} </Text>
                 <TouchableOpacity onPress={() => this.openModalLikes()}>
                 <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
                 </TouchableOpacity>
@@ -196,7 +196,8 @@ class Post extends Component {
                       </Modal>
               }
         </>):(<><Text>Descripción: {this.props.post.description}</Text>
-        <Text>Usuario: {this.props.post.username}</Text>
+        <Text> Usuario: {this.props.post.user} </Text>
+        <Text> Mail: {this.props.post.mail} </Text>
         <TouchableOpacity onPress={() => this.openModalLikes()}>
         <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
         </TouchableOpacity>

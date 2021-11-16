@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    FlatList
-  } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { db, auth } from '../firebase/config';
 import MyCamera from '../components/MyCamera'
 
@@ -18,29 +11,25 @@ class Post extends Component {
             description: '', 
             showCamera: true,
         }
-        console.log(this.props);
-        
     }
 
     submitPost() {
         db.collection('posteos').add({
-            user: auth.currentUser.email,
+            user: auth.currentUser.displayName, 
+            mail: auth.currentUser.email,
             createdAt: Date.now(),
             title: this.state.title,
             description: this.state.description,
             likes: [],
             comments: [], 
             photo: this.state.url
-        })
-            .then(() => {
-                console.log('Se posteo exitosamente');
-                this.setState({
-                    title: '',
-                    description: ''
-                })
-                this.props.drawerProps.navigation.navigate("Home")
+        }).then(() => {
+            this.setState({
+               title: '',
+               description: ''
             })
-            .catch(err => console.log(err))
+            this.props.drawerProps.navigation.navigate("Home")
+        }).catch(err => console.log(err))
     }
 
     onImageUpload(url){

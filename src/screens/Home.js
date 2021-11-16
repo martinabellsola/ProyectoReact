@@ -29,7 +29,7 @@ class Home extends Component {
       this.setState({
         post: post,
         loading: false,
-      })
+      }, ()=> console.log(this.state.post))
     })
   }
 

@@ -7,7 +7,7 @@ class Register extends Component {
     this.state= {
       email: '',
       password: '',
-      user: '',
+      userName: '',
     }
   }
 
@@ -16,12 +16,12 @@ class Register extends Component {
       <View>
         <Text> {this.props.error} </Text>
         <TextInput
-          onChangeText={(text) => this.setState({ user: text })}
+          onChangeText={(text) => this.setState({ userName: text })}
           placeholder="User name"
           keyboardType="default"
         />
         <TextInput
-          onChangeText={(text) => this.setState({ email: text },()=> console.log(this.state.email) )}  
+          onChangeText={(text) => this.setState({ email: text })}  
           placeholder="email"
           keyboardType="email-address"
         />
@@ -32,10 +32,10 @@ class Register extends Component {
           secureTextEntry={true}
         />
 
-        {(this.state.email !== ''&& this.state.user !== '' && this.state.password !== '') ? (
+        {(this.state.email !== ''&& this.state.userName !== '' && this.state.password !== '') ? (
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.register(this.state.email, this.state.password)}
+            onPress={() => this.props.register(this.state.email, this.state.userName, this.state.password)}
           >
             <Text style={styles.textButton}>Registrar</Text>
           </TouchableOpacity>
@@ -74,7 +74,7 @@ class Register extends Component {
       borderWidth: 1,
       borderStyle: "solid",
       borderColor: "gray",
-      },
+    },
   });
 
 export default Register;
