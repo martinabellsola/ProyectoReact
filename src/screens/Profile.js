@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList} from "react-native";
 import { auth, db } from "../firebase/config";
-import ProfileCard from '../components/ProfileCard'
+import Card from '../components/Card'
 class Profile extends Component{
     constructor(props) {
       super(props);
@@ -15,7 +15,7 @@ class Profile extends Component{
       this.showPost();
     }
     showPost(){
-      db.collection("posteos").where('user', '==', auth.currentUser.email).orderBy('createdAt', 'desc').onSnapshot( docs => {
+      db.collection("posteos").where('user', '==', auth.currentUser.email).onSnapshot( docs => {
         let post = []
         docs.forEach((doc) => {
           post.push({
@@ -39,6 +39,7 @@ class Profile extends Component{
             <Text> Email usuario: {auth.currentUser.email} </Text>
             <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
             <Text> Última sesión: {auth.currentUser.metadata.lastSignInTime} </Text>
+            <Text> Cantidad de posteos realizados: {this.state.post.length} </Text>
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.props.signOut()}
@@ -49,7 +50,7 @@ class Profile extends Component{
                data={this.state.post}
                keyExtractor={(post) => post.id.toString()}
                renderItem={({item}) => (
-                 <ProfileCard post={item.data} id={item.id} photo={item.photo} />
+                 <Card post={item.data} id={item.id} photo={item.photo} />
                )}
              />   </> }
           </View>

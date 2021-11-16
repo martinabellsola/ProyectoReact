@@ -52,7 +52,7 @@ class Comments extends Component {
             <Text>{item.user} : {item.text}</Text>
            
             )}
-          />}
+          />
                
            </View>
         )
