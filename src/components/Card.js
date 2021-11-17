@@ -123,7 +123,7 @@ class Post extends Component {
     return (
       <View style={styles.formContainer}>
         <Image style={styles.photo} source={{uri:this.props.post.photo}}/>
-            {(this.props.post.user === auth.currentUser.email) ?(
+            {(this.props.post.mail === auth.currentUser.email) ?(
               <>
                 <TouchableOpacity onPress={()=>this.openModalX()}>
                   <Text>X</Text>
@@ -134,7 +134,7 @@ class Post extends Component {
                 <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.openModalComents()}>
-                  <Text>Comentarios: {this.props.post.comments.length} </Text>
+                  <Text> Comentarios: {this.props.post.comments.length} </Text>
                 </TouchableOpacity>
                 { ! (this.state.liked) ?  
                   (<TouchableOpacity style={styles.button} onPress={() => this.like(this.props.id)}> 

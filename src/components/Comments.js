@@ -14,7 +14,6 @@ class Comments extends Component {
     
     }
 
- // ------
     componentDidMount() {
         this.getComments()
     }
@@ -32,10 +31,8 @@ class Comments extends Component {
         })
         .catch(err => console.log(err))
     }
-  // ------
-    
+
     render(){
-        console.log(this.state.comentarios);
         return (
            <View>
                <TextInput 
@@ -45,15 +42,18 @@ class Comments extends Component {
                multiline
                />
                <TouchableOpacity onPress={()=>this.props.comentar(this.state.comentario)}> <Text>Comentar</Text></TouchableOpacity>
-               <FlatList style={styles.FlatList}
-            data={this.state.comentarios}
-            keyExtractor={(comentario) => comentario.date.toString()}
-            renderItem={({item}) => (
-            <Text>{item.user} : {item.text}</Text>
-           
-            )}
-          />
-               
+               {(this.state.comentarios.length !== 0)?(
+                    <FlatList style={styles.FlatList}
+                        data={this.state.comentarios}
+                        keyExtractor={(comentario) => comentario.date.toString()}
+                        renderItem={({item}) => (
+                        <Text>{item.user} : {item.text} </Text>
+                    )}
+                    />
+                ):(
+                    <Text> Todavía no hay comentarios, se el primero! </Text>
+                )
+            }               
            </View>
         )
     }
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
       color: 'black'
     },
     
-  });
+});
 
 export default Comments
