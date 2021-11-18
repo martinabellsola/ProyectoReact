@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, Modal } from "react-native";
-
+import CameraProfile from "../components/CameraProfile"
 class Register extends Component {
   constructor(){
     super();
@@ -8,6 +8,7 @@ class Register extends Component {
       email: '',
       password: '',
       userName: '',
+      url:'',
       showModalPhoto: false
     }
   }
@@ -21,6 +22,12 @@ class Register extends Component {
       showModalPhoto: false
     })}
 
+    onImageUpload(url){
+      this.setState({
+        url: url, 
+        showCamera: false
+      })
+    }
   render() {
     return (
       <View>
@@ -36,7 +43,7 @@ class Register extends Component {
         visible= {this.state.showModalPhoto}
         animationType="slide"
         transparent={true}>
-
+              <CameraProfile onImageUpload={(url)=> this.onImageUpload(url)} />
        <TouchableOpacity onPress={() => this.closeModalPhoto()} style={styles.closeModal}>
                 <Text> X </Text>
         </TouchableOpacity>
@@ -63,7 +70,7 @@ class Register extends Component {
         {(this.state.email !== ''&& this.state.userName !== '' && this.state.password !== '') ? (
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.props.register(this.state.email, this.state.userName, this.state.password)}
+            onPress={() => this.props.register(this.state.email, this.state.userName, this.state.password, this.state.url)}
           >
             <Text style={styles.textButton}>Registrar</Text>
           </TouchableOpacity>

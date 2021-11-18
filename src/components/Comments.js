@@ -2,20 +2,23 @@ import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
 import { db, auth, storage} from "../firebase/config";
 import firebase from 'firebase';
-
+import moment from 'moment';
 
 class Comments extends Component {
     constructor(props){
         super(props); 
         this.state = {
             comentario: '',
-            comentarios:[]
+            comentarios:[],
+            Fechacom:""
         }
     
     }
 
     componentDidMount() {
         this.getComments()
+        
+       
     }
 
     componentDidUpdate() {
@@ -31,11 +34,14 @@ class Comments extends Component {
         })
         .catch(err => console.log(err))
     }
+   
+      
 
     render(){
         return (
-           <View>
+           <View >
                <TextInput 
+               style={styles.inputContainer}
                keyboardType='default' 
                placeholder='Agrega tu comentario'  
                onChangeText={(com)=>this.setState({comentario: com })}
@@ -47,7 +53,12 @@ class Comments extends Component {
                         data={this.state.comentarios}
                         keyExtractor={(comentario) => comentario.date.toString()}
                         renderItem={({item}) => (
-                        <Text>{item.user} : {item.text} </Text>
+                        <View style={styles.container}>
+                        <Text style={{fontWeight: 'bold' }}>{item.user}</Text> 
+                        <Text>{item.text} </Text>
+                        
+                        <Text style={{textAlign: 'right', opacity: 0.5 }}>{item.date}</Text>
+                        </View>
                     )}
                     />
                 ):(
@@ -63,7 +74,29 @@ const styles = StyleSheet.create({
     FlatList: {
       color: 'black'
     },
-    
+    container:{
+        marginTop: 20,
+        paddingVertical:15,
+        paddingHorizontal: 10,
+        borderWidth:1,
+        borderColor: '#ccc',
+        borderStyle: 'solid',
+        borderRadius: 6,
+        marginVertical:10,
+        backgroundColor: 'rgba(242, 243, 245, 1)',
+        
+      },
+      inputContainer:{
+        marginTop: 20,
+        paddingVertical:15,
+        paddingHorizontal: 10,
+        borderWidth:1,
+        borderColor: '#ccc',
+        borderStyle: 'solid',
+        borderRadius: 6,
+        marginVertical:10,
+        backgroundColor: 'rgba(242, 243, 245, 0,7)'
+      },
 });
 
 export default Comments

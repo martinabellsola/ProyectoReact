@@ -44,13 +44,14 @@ class Menu extends Component {
     }
 
 
-    register(email, userName, password, uri) {
+    register(email, userName, password, url) {
+        console.log(url)
         auth
         .createUserWithEmailAndPassword(email, password)
         .then((userData) => {
             userData.user.updateProfile({
                 displayName: userName, 
-                photoURL: uri
+                photoUrl: url
             })
         }).then((userData)=>{
             this.setState({
@@ -107,7 +108,7 @@ class Menu extends Component {
                     {(this.state.loggedIn === false) ? (
                         <>
                             <Drawer.Screen name="Login" component={() => <Login  error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
-                            <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, userName, pass) => this.register(email, userName, pass)} />} />
+                            <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} />
                         </>
                         ) : (
                         <>

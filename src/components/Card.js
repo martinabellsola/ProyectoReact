@@ -4,6 +4,7 @@ import { db, auth, } from "../firebase/config";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import firebase from 'firebase';
 import Comments from '../components/Comments'
+import moment from 'moment';
 
 class Post extends Component {
   constructor(props) {
@@ -67,7 +68,8 @@ class Post extends Component {
   };
 
   comment(com){
-    let comentario = {text: com, user: auth.currentUser.email, date: Date.now()}
+
+    let comentario = {text: com, user: auth.currentUser.email, date: moment().format('LLLL')}
     db.collection("posteos").doc(this.props.id).update({
       comments: firebase.firestore.FieldValue.arrayUnion(comentario)
     }).then(()=>{
@@ -113,14 +115,14 @@ class Post extends Component {
     console.log(err)
   })};
 
-  openModal(){
+  openModalX(){
   this.setState({
     showModalX: true
   })}
 
-  closeModal(){
-    this.setState({
-      showModalX: false
+  closeModalX(){
+  this.setState({
+    showModalX: false
   })}
 
   render() {
@@ -131,7 +133,7 @@ class Post extends Component {
           <Text style={styles.userName}> {this.props.post.user} </Text>
             { this.props.post.mail === auth.currentUser.email 
               ? <>
-                <TouchableOpacity onPress={()=>this.openModal()}>
+                <TouchableOpacity onPress={()=>this.openModalX()}>
                   <Icon size={20} name="times"/>
                 </TouchableOpacity>
                 </>
@@ -158,7 +160,7 @@ class Post extends Component {
         </View>
         
         <TouchableOpacity onPress={() => this.openModalLikes()}>
-          <Text style={{fontWeight: 600, color: "#262626"}} > {this.props.post.likes.length} Me gusta </Text>
+          <Text style={{fontWeight: 600, color: "#262626",}} > {this.props.post.likes.length} Me gusta </Text>
         </TouchableOpacity> 
         
         <View style={styles.descrip}>
@@ -199,25 +201,18 @@ class Post extends Component {
           <Modal 
             style={styles.modalContainer}
             visible={this.state.showModalLikes}
-            animationType="fade"
+            animationType="slide"
             transparent={true}
           >
             <View style={styles.modalView}> 
               <View style={styles.modalInfo}> 
-                <View style={styles.megustaRow}>
-                  <Text style={{fontSize: 16, fontWeight: 600}}> Me gusta</Text>
+                <View style={styles.row}>
+                  <Text style={{paddingRight: 10, fontStyle: 16}}> Me gusta</Text>
                   <TouchableOpacity onPress={() => this.closeModalLikes()}>
-                    <Icon style={{paddingLeft: 10}} size={20} name="times" />
+                    <Icon size={20} name="times" />
                   </TouchableOpacity>
                 </View>
-                <Text style={{marginBottom: 10, color:"#8e8e8e",}}>______________________________________</Text>
-                <FlatList
-                  data={this.props.post.likes}
-                  keyExtractor={(post) => post}
-                  renderItem={({item}) => (
-                    <Text style={{marginTop: 2}}>{item}</Text>
-                  )}
-                />
+                <Text>{this.props.post.likes}</Text>
               </View>
             </View>  
           </Modal>
@@ -229,23 +224,25 @@ class Post extends Component {
             <Modal 
               style={styles.modal}
               visible={this.state.showModalX}
-              animationType="fade"
+              animationType="slide"
               transparent={true}
             >
-              <View style={styles.modalView}> 
-                <View style={styles.modalInfoDelete}> 
-                  <Text style={{fontSize: 15, fontWeight: 600}}> ¿Descartar publicación? </Text>
-                  <Text style={{fontSize: 15, fontWeight: 400, color:"#8e8e8e", marginTop: 12}}>Si sales, no se guardarán los cambios </Text>
-                  <TouchableOpacity onPress={() => this.borrar(this.props.id)}>
-                    <Text style={{fontSize: 15, fontWeight: 700, color: "#ed4956", marginTop: 18}}> Descartar </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => this.closeModal()}>
-                    <Text style={{fontSize: 15, fontWeight: 400, marginTop: 10}}> Cancelar </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <Modal 
+                style={styles.modalContainer}
+                visible={this.state.showModalX}
+                animationType="slide"
+                transparent={true}
+              >
+                <Text> ¿Esta seguro que desea borrar su posteo? </Text>
+                <TouchableOpacity onPress={() => this.borrar(this.props.id)} style={styles.closeModal}>
+                  <Text> SI </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.closeModalX()} style={styles.closeModal}>
+                  <Text> NO </Text>
+                </TouchableOpacity>
+              </Modal>
             </Modal>
-        }
+         }
       </View>
     );
   }    
@@ -269,11 +266,6 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     marginTop: 5, 
     marginLeft: 3,
-  },
-  megustaRow: {
-    display: "flex", 
-    flexDirection: "row",
-    justifyContent: "space-between", 
   },
   action: {
     display: "flex", 
@@ -303,7 +295,7 @@ const styles = StyleSheet.create({
     marginTop: 22, 
   },
   modalView: {
-    backgroundColor: 'rgba(52, 52, 52, 0.70)',
+    backgroundColor: "rgba(52,52,52,0.5)",
     height: "100%", 
    
   },
@@ -316,15 +308,13 @@ const styles = StyleSheet.create({
     padding: 35,
     alignItems: "center",
   },
-  modalInfoDelete: {
-    margin: "auto",
-    backgroundColor: "white",
-    height: "129", 
-    width: "80%",
-    borderRadius: 12,
-    padding: 35,
-    alignItems: "center",
-},
+  closeModal:{
+    alignSelf: 'flex-end',
+    padding: 10,
+    backgroundColor: '#dc3545',
+    marginTop:2,
+    borderRadius: 4,
+  },
 });
 
 export default Post
