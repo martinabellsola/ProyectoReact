@@ -116,7 +116,7 @@ class Menu extends Component {
                                 component={()=><Home loading={this.state.loading} />} />
                             <Drawer.Screen 
                                 name="Post" 
-                                options= {{drawerIcon: config => <Icon size={23} name="plus"/>}}
+                                options= {{drawerIcon: config => <Icon size={23} name="plus"/>, unmountOnBlur: true}}
                                 component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
                             <Drawer.Screen 
                                 name="Profile"
@@ -124,7 +124,7 @@ class Menu extends Component {
                                 component={()=><Profile signOut ={() => this.signOut() }/>}/>
                             <Drawer.Screen 
                                 name="Search" 
-                                options= {{drawerIcon: config => <Icon size={23} name="search"/>}}
+                                options= {{drawerIcon: config => <Icon size={23} name="search"/>, unmountOnBlur: true}}
                                 component={()=><Search />} />
                         </>
                     )}
