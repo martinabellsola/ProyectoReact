@@ -35,26 +35,29 @@ class Profile extends Component{
     render() {
         return (
           <View>
-            {(this.state.loading === true) ? <ActivityIndicator size="large" color="pink" /> :
-            <>
-            <Text> Nombre usuario: {auth.currentUser.displayName} </Text>
-            <Text> Email usuario: {auth.currentUser.email} </Text>
-            <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
-            <Text> Última sesión: {auth.currentUser.metadata.lastSignInTime} </Text>
-            <Text> Cantidad de posteos realizados: {this.state.post.length} </Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.signOut()}
-            >
-              <Text style={styles.textButton}> Cerrar sesión </Text>
-            </TouchableOpacity>
-             <FlatList
-               data={this.state.post}
-               keyExtractor={(post) => post.id.toString()}
-               renderItem={({item}) => (
-                 <Card post={item.data} id={item.id} photo={item.photo} />
-               )}
-             />   </> }
+            { this.state.loading === true ? 
+                <ActivityIndicator size="large" color="pink" /> 
+              :
+              <View>
+                <Text> Nombre usuario: {auth.currentUser.displayName} </Text>
+                <Text> Email usuario: {auth.currentUser.email} </Text>
+                <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
+                <Text> Última sesión: {auth.currentUser.metadata.lastSignInTime} </Text>
+                <Text> Cantidad de posteos realizados: {this.state.post.length} </Text>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => this.props.signOut()}
+                >
+                  <Text style={styles.textButton}> Cerrar sesión </Text>
+                </TouchableOpacity>
+                <FlatList
+                  data={this.state.post}
+                  keyExtractor={(post) => post.id.toString()}
+                  renderItem={({item}) => (
+                    <Card post={item.data} id={item.id} photo={item.photo} />
+                  )}
+                />   
+             </View> }
           </View>
         );
       }

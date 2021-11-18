@@ -20,7 +20,6 @@ class Post extends Component {
             user: auth.currentUser.displayName, 
             mail: auth.currentUser.email,
             createdAt: Date.now(),
-            title: this.state.title,
             description: this.state.description,
             likes: [],
             comments: [], 
@@ -44,19 +43,12 @@ class Post extends Component {
 
     render() {
         return (
-          (this.state.showCamera) ? 
-            (<MyCamera onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps} />) :  
-            (<View style={styles.formContainer}>  
+          this.state.showCamera ? 
+            <MyCamera onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps} /> :  
+            <View style={styles.formContainer}>  
                 <TextInput 
                     style={styles.input}
-                    placeholder="Título"
-                    keyboardType="default"
-                    onChangeText={ text => this.setState({ title: text }) }
-                    value={this.state.title}
-                />
-                <TextInput 
-                    style={styles.input}
-                    placeholder="Descripción"
+                    placeholder="Escribe una descripción..."
                     keyboardType="default"
                     onChangeText={ text => this.setState({ description: text }) }
                     value={this.state.description}
@@ -68,7 +60,7 @@ class Post extends Component {
                         Postear
                     </Text>
                 </TouchableOpacity>
-            </View>)
+            </View>
         )
     }
 }

@@ -44,12 +44,13 @@ class Menu extends Component {
     }
 
 
-    register(email, userName, password) {
+    register(email, userName, password, uri) {
         auth
         .createUserWithEmailAndPassword(email, password)
         .then((userData) => {
             userData.user.updateProfile({
-                displayName: userName
+                displayName: userName, 
+                photoURL: uri
             })
         }).then((userData)=>{
             this.setState({

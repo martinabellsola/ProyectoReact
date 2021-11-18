@@ -1,5 +1,5 @@
 import React, {Component} from 'react'; 
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image, Modal } from "react-native";
 import { db, auth, storage} from "../firebase/config";
 import firebase from 'firebase';
 import { Camera } from 'expo-camera';
@@ -12,6 +12,7 @@ class myCamera extends Component {
             permission: false, 
             photo: "",
             showCamera: true, 
+            showModal: false,
         }
         this.camera;
     }
@@ -70,6 +71,18 @@ class myCamera extends Component {
         })
         this.props.drawerProps.navigation.navigate("Home")
     }
+
+    openModal(){
+        this.setState({
+          showModal: true
+        }
+    )}
+      
+    closeModal(){
+        this.setState({
+          showModal: false
+        }
+    )}
    
     render(){
         return (
@@ -77,19 +90,44 @@ class myCamera extends Component {
                 {
                     this.state.showCamera === false ? 
                     <>
-                     <Image 
-                        style={{width: "100%", height:100}}
-                        source = {{uri: this.state.photo}}
-                     />
                      <View style={styles.menu}>
-                        <TouchableOpacity onPress={()=> this.cancelar()}>
-                            <Icon size={25} name="arrow-left" solid/>
+
+                        <TouchableOpacity onPress={()=> this.openModal()}>
+                            <Icon size={16} name="arrow-left" solid/>
                         </TouchableOpacity>
-                            <Icon size={25} name="magic" solid/>
+
+                        { ! this.state.showModal ? 
+                            null
+                        :
+                        <Modal 
+                            style={styles.modalContainer}
+                            visible={this.state.showModal}
+                            animationType="fade"
+                            transparent={true}
+                        >
+                            <View style={styles.modalView}> 
+                            <View style={styles.modalInfo}> 
+                                <Text style={{fontSize: 15, fontWeight: 600}}> ¿Descartar publicación? </Text>
+                                <Text style={{fontSize: 15, fontWeight: 400, color:"#8e8e8e", marginTop: 12}}>Si sales, no se guardarán los cambios </Text>
+                                <TouchableOpacity onPress={() => this.cancelar()}>
+                                    <Text style={{fontSize: 15, fontWeight: 700, color: "#ed4956", marginTop: 18}}> Descartar </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.closeModal()}>
+                                    <Text style={{fontSize: 15, fontWeight: 400, marginTop: 10}}> Cancelar </Text>
+                                </TouchableOpacity>
+                            </View>
+                            </View>  
+                        </Modal>
+                        }
+                            <Text style={{fontWeight:600, fontSize: 14}}> Crea una nueva publicación </Text>
                         <TouchableOpacity onPress={()=>this.savePhoto()}>
-                            <Icon size={25} style={{color:"blue"}} name="arrow-right" solid/>
+                            <Text style={{color:"#0095f6", fontWeight:400, fontSize: 14}}> Compartir</Text>
                         </TouchableOpacity>
                      </View>
+                     <Image 
+                        style={{width: "100%", height:350}}
+                        source = {{uri: this.state.photo}}
+                     />
                     </>
                 : 
                     <>
@@ -117,5 +155,21 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between", 
         marginBottom: 5,
+        marginTop: 5, 
+        marginLeft: 2, 
+        marginRight: 2,
+    },
+    modalView: {
+        backgroundColor: 'rgba(52, 52, 52, 0.70)',
+        height: "100%", 
+      },
+    modalInfo: {
+        margin: "auto",
+        backgroundColor: "white",
+        height: "129", 
+        width: "80%",
+        borderRadius: 12,
+        padding: 35,
+        alignItems: "center",
     },
 });

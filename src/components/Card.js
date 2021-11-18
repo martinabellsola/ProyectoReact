@@ -113,14 +113,14 @@ class Post extends Component {
     console.log(err)
   })};
 
-  openModalX(){
+  openModal(){
   this.setState({
     showModalX: true
   })}
 
-  closeModalX(){
-  this.setState({
-    showModalX: false
+  closeModal(){
+    this.setState({
+      showModalX: false
   })}
 
   render() {
@@ -131,7 +131,7 @@ class Post extends Component {
           <Text style={styles.userName}> {this.props.post.user} </Text>
             { this.props.post.mail === auth.currentUser.email 
               ? <>
-                <TouchableOpacity onPress={()=>this.openModalX()}>
+                <TouchableOpacity onPress={()=>this.openModal()}>
                   <Icon size={20} name="times"/>
                 </TouchableOpacity>
                 </>
@@ -158,7 +158,7 @@ class Post extends Component {
         </View>
         
         <TouchableOpacity onPress={() => this.openModalLikes()}>
-          <Text style={{fontWeight: 600, color: "#262626",}} > {this.props.post.likes.length} Me gusta </Text>
+          <Text style={{fontWeight: 600, color: "#262626"}} > {this.props.post.likes.length} Me gusta </Text>
         </TouchableOpacity> 
         
         <View style={styles.descrip}>
@@ -199,18 +199,25 @@ class Post extends Component {
           <Modal 
             style={styles.modalContainer}
             visible={this.state.showModalLikes}
-            animationType="slide"
+            animationType="fade"
             transparent={true}
           >
             <View style={styles.modalView}> 
               <View style={styles.modalInfo}> 
-                <View style={styles.row}>
-                  <Text style={{paddingRight: 10, fontStyle: 16}}> Me gusta</Text>
+                <View style={styles.megustaRow}>
+                  <Text style={{fontSize: 16, fontWeight: 600}}> Me gusta</Text>
                   <TouchableOpacity onPress={() => this.closeModalLikes()}>
-                    <Icon size={20} name="times" />
+                    <Icon style={{paddingLeft: 10}} size={20} name="times" />
                   </TouchableOpacity>
                 </View>
-                <Text>{this.props.post.likes}</Text>
+                <Text style={{marginBottom: 10, color:"#8e8e8e",}}>______________________________________</Text>
+                <FlatList
+                  data={this.props.post.likes}
+                  keyExtractor={(post) => post}
+                  renderItem={({item}) => (
+                    <Text style={{marginTop: 2}}>{item}</Text>
+                  )}
+                />
               </View>
             </View>  
           </Modal>
@@ -222,25 +229,23 @@ class Post extends Component {
             <Modal 
               style={styles.modal}
               visible={this.state.showModalX}
-              animationType="slide"
+              animationType="fade"
               transparent={true}
             >
-              <Modal 
-                style={styles.modalContainer}
-                visible={this.state.showModalX}
-                animationType="slide"
-                transparent={true}
-              >
-                <Text> ¿Esta seguro que desea borrar su posteo? </Text>
-                <TouchableOpacity onPress={() => this.borrar(this.props.id)} style={styles.closeModal}>
-                  <Text> SI </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.closeModalX()} style={styles.closeModal}>
-                  <Text> NO </Text>
-                </TouchableOpacity>
-              </Modal>
+              <View style={styles.modalView}> 
+                <View style={styles.modalInfoDelete}> 
+                  <Text style={{fontSize: 15, fontWeight: 600}}> ¿Descartar publicación? </Text>
+                  <Text style={{fontSize: 15, fontWeight: 400, color:"#8e8e8e", marginTop: 12}}>Si sales, no se guardarán los cambios </Text>
+                  <TouchableOpacity onPress={() => this.borrar(this.props.id)}>
+                    <Text style={{fontSize: 15, fontWeight: 700, color: "#ed4956", marginTop: 18}}> Descartar </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.closeModal()}>
+                    <Text style={{fontSize: 15, fontWeight: 400, marginTop: 10}}> Cancelar </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </Modal>
-         }
+        }
       </View>
     );
   }    
@@ -264,6 +269,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     marginTop: 5, 
     marginLeft: 3,
+  },
+  megustaRow: {
+    display: "flex", 
+    flexDirection: "row",
+    justifyContent: "space-between", 
   },
   action: {
     display: "flex", 
@@ -293,7 +303,7 @@ const styles = StyleSheet.create({
     marginTop: 22, 
   },
   modalView: {
-    backgroundColor: "#000",
+    backgroundColor: 'rgba(52, 52, 52, 0.70)',
     height: "100%", 
   },
   modalInfo: {
@@ -305,13 +315,15 @@ const styles = StyleSheet.create({
     padding: 35,
     alignItems: "center",
   },
-  closeModal:{
-    alignSelf: 'flex-end',
-    padding: 10,
-    backgroundColor: '#dc3545',
-    marginTop:2,
-    borderRadius: 4,
-  },
+  modalInfoDelete: {
+    margin: "auto",
+    backgroundColor: "white",
+    height: "129", 
+    width: "80%",
+    borderRadius: 12,
+    padding: 35,
+    alignItems: "center",
+},
 });
 
 export default Post
