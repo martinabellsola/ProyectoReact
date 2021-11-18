@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, Modal } from "react-native";
 
 class Register extends Component {
   constructor(){
@@ -8,13 +8,41 @@ class Register extends Component {
       email: '',
       password: '',
       userName: '',
+      showModalPhoto: false
     }
   }
+  openModalPhoto(){
+    this.setState({
+      showModalPhoto: true
+    })}
+  
+    closeModalPhoto(){
+    this.setState({
+      showModalPhoto: false
+    })}
 
   render() {
     return (
       <View>
+
         <Text> {this.props.error} </Text>
+
+        <TouchableOpacity onPress={() => this.openModalPhoto()} style={styles.closeModal}>
+                <Text> Agregar foto de perfil </Text>
+        </TouchableOpacity>
+
+        <Modal  
+        style={styles.modalContainer}
+        visible= {this.state.showModalPhoto}
+        animationType="slide"
+        transparent={true}>
+
+       <TouchableOpacity onPress={() => this.closeModalPhoto()} style={styles.closeModal}>
+                <Text> X </Text>
+        </TouchableOpacity>
+
+        </Modal>
+
         <TextInput
           onChangeText={(text) => this.setState({ userName: text })}
           placeholder="User name"
@@ -74,6 +102,33 @@ class Register extends Component {
       borderWidth: 1,
       borderStyle: "solid",
       borderColor: "gray",
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22, 
+    },
+    modalView: {
+      backgroundColor: "rgba(52,52,52,0.5)",
+      height: "100%", 
+     
+    },
+    modalInfo: {
+      margin: "auto",
+      backgroundColor: "white",
+      height: "80%", 
+      width: "85%",
+      borderRadius: 15,
+      padding: 35,
+      alignItems: "center",
+    },
+    closeModal:{
+      alignSelf: 'flex-end',
+      padding: 10,
+      backgroundColor: '#dc3545',
+      marginTop:2,
+      borderRadius: 4,
     },
   });
 

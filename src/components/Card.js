@@ -305,6 +305,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: 'rgba(52, 52, 52, 0.70)',
     height: "100%", 
+   
   },
   modalInfo: {
     margin: "auto",
