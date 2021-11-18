@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
 import { db, auth, storage} from "../firebase/config";
 import firebase from 'firebase';
-import { Camera } from 'expo-camera'
+import { Camera } from 'expo-camera';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 class myCamera extends Component {
     constructor(props){
@@ -10,6 +11,7 @@ class myCamera extends Component {
         this.state = {
             permission: false, 
             photo: "",
+            showCamera: true, 
         }
         this.camera;
     }
@@ -26,7 +28,19 @@ class myCamera extends Component {
         Camera.getAvailableCameraTypesAsync()
         .then((res)=> console.log(res))
     }
-    
+
+    takePicture(){
+        this.camera
+            .takePictureAsync()
+                .then((photo)=>{
+                    this.setState({
+                        photo: photo.uri,
+                        showCamera: false
+                    })
+                })
+                .catch((err)=> console.log(err))
+    }
+
     savePhoto(){
         fetch(this.state.photo)
         .then((res)=> res.blob())
@@ -48,55 +62,47 @@ class myCamera extends Component {
         
     }
    
-
-    takePicture(){
-        this.camera
-            .takePictureAsync()
-                .then((photo)=>{
-                    this.setState({
-                        photo: photo.uri,
-                    })
-                })
-                .catch((err)=> console.log(err))
-    }
-
     cancelar(){
+        this.setState({
+            permission: false, 
+            photo: "", 
+            showCamera: true,
+        })
         this.props.drawerProps.navigation.navigate("Home")
     }
    
-
     render(){
         return (
             <> 
-                {this.state.photo ? 
+                {
+                    this.state.showCamera === false ? 
                     <>
                      <Image 
                         style={{width: "100%"}}
-                        source = {{uri:this.state.photo}}
+                        source = {{uri: this.state.photo}}
                      />
-                     <View>
-                         <TouchableOpacity onPress={()=>this.savePhoto()}>
-                             <Text> Aceptar </Text>
-                         </TouchableOpacity>
-                         <TouchableOpacity onPress={()=> this.cancelar()}>
-                             <Text> Cancelar </Text>
-                         </TouchableOpacity>
+                     <View style={styles.menu}>
+                        <TouchableOpacity onPress={()=> this.cancelar()}>
+                            <Icon size={25} name="arrow-left" solid/>
+                        </TouchableOpacity>
+                            <Icon size={25} name="magic" solid/>
+                        <TouchableOpacity onPress={()=>this.savePhoto()}>
+                            <Icon size={25} style={{color:"blue"}} name="arrow-right" solid/>
+                        </TouchableOpacity>
                      </View>
                     </>
                 : 
                     <>
                     <Camera 
-                        style={{flex: 2, width:"100%"}}
+                        style={{flex: 3, width:"100%", position: "absolute", height:"100%"}}
                         type={Camera.Constants.Type.front}
                         ref={(cam)=> (this.camera = cam)}
                     /> 
-                    
                     <TouchableOpacity  style={{flex: 1, width:"100%"}} onPress={()=> this.takePicture()}>    
-                        <Text>Shoot</Text>
+                        <Icon size={50} style={{color:"white", position: "relative", marginHorizontal:"auto", marginVertical:"120%"}} name="circle" solid/>
                     </TouchableOpacity>
                     </>
                 }
-                 
                 
             </>
         )
@@ -104,3 +110,12 @@ class myCamera extends Component {
 }
 
 export default myCamera
+
+const styles = StyleSheet.create({
+    menu: {
+        display: "flex", 
+        flexDirection: "row",
+        justifyContent: "space-between", 
+        marginBottom: 5,
+    },
+});

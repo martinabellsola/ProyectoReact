@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { db, auth } from '../firebase/config';
 import MyCamera from '../components/MyCamera'
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 class Post extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class Post extends Component {
             title: '',
             description: '', 
             showCamera: true,
+            url: '',
         }
     }
 
@@ -26,7 +28,8 @@ class Post extends Component {
         }).then(() => {
             this.setState({
                title: '',
-               description: ''
+               description: '', 
+               url: '',
             })
             this.props.drawerProps.navigation.navigate("Home")
         }).catch(err => console.log(err))

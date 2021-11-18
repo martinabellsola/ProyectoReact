@@ -1,6 +1,7 @@
 import React, {Component} from 'react'; 
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image, Modal } from "react-native";
 import { db, auth, } from "../firebase/config";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import firebase from 'firebase';
 import Comments from '../components/Comments'
 
@@ -31,7 +32,8 @@ class Post extends Component {
     }
     if(likes.includes(auth.currentUser.email + ", ")){
       this.setState({
-        liked:true
+        liked: true, 
+        colorLiked: "red", 
       })
     }
   }
@@ -42,6 +44,7 @@ class Post extends Component {
     }).then(()=>{
       this.setState({
       liked: true,
+      colorLiked: "red", 
       likes: this.state.likes + 1, 
     })})
     .catch((err)=> {
@@ -55,6 +58,7 @@ class Post extends Component {
     }).then(()=>{
       this.setState({
       liked: false,
+      colorLiked: "black", 
       likes: this.state.likes - 1, 
     })})
     .catch((err)=> {
@@ -121,151 +125,153 @@ class Post extends Component {
 
   render() {
     return (
-      <View style={styles.formContainer}>
-        <Image style={styles.photo} source={{uri:this.props.post.photo}}/>
-            {(this.props.post.mail === auth.currentUser.email) ?(
-              <>
+      <View style={styles.container}>
+    
+        <View style={styles.userNameFrame}>
+          <Text style={styles.userName}> {this.props.post.user} </Text>
+            { this.props.post.mail === auth.currentUser.email 
+              ? <>
                 <TouchableOpacity onPress={()=>this.openModalX()}>
-                  <Text>X</Text>
+                  <Icon size={20} name="times"/>
                 </TouchableOpacity>
-                <Text>Descripción: {this.props.post.description}</Text>
-                <Text>Usuario: {this.props.post.user} </Text>
-                <TouchableOpacity onPress={() => this.openModalLikes()}>
-                <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.openModalComents()}>
-                  <Text> Comentarios: {this.props.post.comments.length} </Text>
-                </TouchableOpacity>
-                { ! (this.state.liked) ?  
-                  (<TouchableOpacity style={styles.button} onPress={() => this.like(this.props.id)}> 
-                    <Text style={styles.textButton}>Like</Text> 
-                  </TouchableOpacity>) 
-                : (
-                  <TouchableOpacity style={styles.button} onPress={() => this.dislike(this.props.id)}> 
-                    <Text style={styles.textButton}> Dislike </Text> 
-                  </TouchableOpacity>)
-                }{
-                  ! this.state.showModalComents ? 
-                    null
-                  :
-                    <Modal 
-                      style={styles.modalContainer}
-                      visible={this.state.showModalComents}
-                      animationType="slide"
-                      transparent={false}
-                    >
-                      <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
-                        <Text> X </Text>
-                      </TouchableOpacity>
-                      <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
-                    </Modal>
-                }{
-                  ! this.state.showModalLikes ? 
-                    null
-                  :
-                  <Modal 
-                    style={styles.modalContainer}
-                    visible={this.state.showModalLikes}
-                    animationType="slide"
-                    transparent={false}
-                  >
-                    <TouchableOpacity onPress={() => this.closeModalLikes()} style={styles.closeModal}>
-                      <Text> X </Text>
-                    </TouchableOpacity>
-                    <Text>Usuarios que likearon: {this.props.post.likes}</Text>
-                  </Modal>
-              }
-          {
-         ! this.state.showModalX ? 
-                      null
-                  :
-                      <Modal 
-                          style={styles.modalContainer}
-                          visible={this.state.showModalX}
-                          animationType="slide"
-                          transparent={false}
-                      >
-                        <Text> ¿Esta seguro que desea borrar su posteo? </Text>
-                          <TouchableOpacity onPress={() => this.borrar(this.props.id)} style={styles.closeModal}>
-                          <Text> SI </Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity onPress={() => this.closeModalX()} style={styles.closeModal}>
-                          <Text> NO </Text>
-                          </TouchableOpacity>
-                         
-                      </Modal>
-              }
-        </>):(<><Text>Descripción: {this.props.post.description}</Text>
-          <Text>Usuario: {this.props.post.user} </Text>
-        <Text> Mail: {this.props.post.mail} </Text>
-        <TouchableOpacity onPress={() => this.openModalLikes()}>
-        <Text>Cantidad de likes: {this.props.post.likes.length}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.openModalComents()}>
-    <Text>Comentarios: {this.props.post.comments.length} </Text>
-        </TouchableOpacity>
-        {
-          ! (this.state.liked) ?  
-            (<TouchableOpacity style={styles.button} onPress={() => this.like(this.props.id)}> 
-              <Text style={styles.textButton}>Like</Text> 
-            </TouchableOpacity>) 
+                </>
+              :
+                null
+            }
+        </View>
+
+        <Image style={styles.photo} source={{uri:this.props.post.photo}}/>
+        
+        <View style={styles.action}>
+        { ! this.state.liked ?  
+          <TouchableOpacity onPress={() => this.like(this.props.id)} style={{paddingRight:10}}> 
+            <Icon style={{color:this.state.colorLiked}}  size={20} name="heart" />
+          </TouchableOpacity>
           : 
-            (<TouchableOpacity style={styles.button} onPress={() => this.dislike(this.props.id)}> 
-              <Text style={styles.textButton}> Dislike </Text> 
-            </TouchableOpacity>)
+          <TouchableOpacity onPress={() => this.dislike(this.props.id)} style={{paddingRight:10}}> 
+            <Icon style={{color:this.state.colorLiked}} size={20} name="heart" solid />
+          </TouchableOpacity>
         }
-        {
-         ! this.state.showModalComents ? 
-                      null
-                  :
-                      <Modal 
-                          style={styles.modalContainer}
-                          visible={this.state.showModalComents}
-                          animationType="slide"
-                          transparent={false}
-                      >
-                          <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
-                          <Text> X </Text>
-                          </TouchableOpacity>
-                          <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
-                      </Modal>
-              }
-        {
-         ! this.state.showModalLikes ? 
-                      null
-                  :
-                      <Modal 
-                          style={styles.modalContainer}
-                          visible={this.state.showModalLikes}
-                          animationType="slide"
-                          transparent={false}
-                      >
-                          <TouchableOpacity onPress={() => this.closeModalLikes()} style={styles.closeModal}>
-                          <Text> X </Text>
-                          </TouchableOpacity>
-                         <Text>Usuarios que likearon: {this.props.post.likes}</Text>
-                      </Modal>
-              }</>)}
+        <TouchableOpacity onPress={() => this.openModalComents()}> 
+          <Icon size={20} name="comment"/>
+        </TouchableOpacity>
+        </View>
+        
+        <TouchableOpacity onPress={() => this.openModalLikes()}>
+          <Text style={{fontWeight: 600, color: "#262626",}} > {this.props.post.likes.length} Me gusta </Text>
+        </TouchableOpacity> 
+        
+        <View style={styles.descrip}>
+          <Text style={{fontWeight:600, color: "#262626"}}>{this.props.post.user}</Text>   
+          <Text> {this.props.post.description}</Text>   
+        </View>
+
+        <TouchableOpacity onPress={() => this.openModalComents()}>
+          {this.props.post.comments.length === 0 ? 
+              <Text style={{color: "#8e8e8e", marginBottom:4,}}> Todavía no hay comentarios, se el primero! </Text>
+            : this.props.post.comments.length === 1 ? 
+              <Text style={{color: "#8e8e8e", marginBottom:4,}}> Ver {this.props.post.comments.length} comentario </Text>
+            : <Text style={{color: "#8e8e8e", marginBottom:4,}}> Ver los {this.props.post.comments.length} comentarios </Text>
+          }
+        </TouchableOpacity>
+        
+        
+        { ! this.state.showModalComents ? 
+              null
+          :
+            <Modal 
+              style={styles.modalContainer}
+              visible={this.state.showModalComents}
+              animationType="slide"
+              transparent={false}
+            >
+              <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
+                <Text> X </Text>
+              </TouchableOpacity>
+              
+              <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
+            </Modal>
+        }
+
+        { ! this.state.showModalLikes ? 
+            null
+          :
+          <Modal 
+            style={styles.modalContainer}
+            visible={this.state.showModalLikes}
+            animationType="slide"
+            transparent={true}
+          >
+            <View style={styles.modalView}> 
+              <View style={styles.modalInfo}> 
+                <View style={styles.row}>
+                  <Text style={{paddingRight: 10, fontStyle: 16}}> Me gusta</Text>
+                  <TouchableOpacity onPress={() => this.closeModalLikes()}>
+                    <Icon size={20} name="times" />
+                  </TouchableOpacity>
+                </View>
+                <Text>{this.props.post.likes}</Text>
+              </View>
+            </View>  
+          </Modal>
+        }
+
+        { ! this.state.showModalX ? 
+            null
+          :
+            <Modal 
+              style={styles.modal}
+              visible={this.state.showModalX}
+              animationType="slide"
+              transparent={true}
+            >
+              <Modal 
+                style={styles.modalContainer}
+                visible={this.state.showModalX}
+                animationType="slide"
+                transparent={true}
+              >
+                <Text> ¿Esta seguro que desea borrar su posteo? </Text>
+                <TouchableOpacity onPress={() => this.borrar(this.props.id)} style={styles.closeModal}>
+                  <Text> SI </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.closeModalX()} style={styles.closeModal}>
+                  <Text> NO </Text>
+                </TouchableOpacity>
+              </Modal>
+            </Modal>
+         }
       </View>
     );
   }    
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#28A745",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    textAlign: "center",
-    borderRadius: 4,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#28A745",
+  userName: {
+    color: "#262626", 
+    fontWeight: "bold", 
+    fontSize: 15, 
   },
-  textButton: {
-    color: "#fff",
+  userNameFrame: {
+    display: "flex", 
+    flexDirection: "row",
+    justifyContent: "space-between", 
+    marginBottom: 5,
   },
-  formContainer:{
+  descrip: {
+    display: "flex", 
+    flexDirection: "row",
+    marginBottom: 4,
+    marginTop: 5, 
+    marginLeft: 3,
+  },
+  action: {
+    display: "flex", 
+    flexDirection: "row",
+    marginBottom: 5,
+    marginTop: 5
+  },
+  container:{
     marginTop: 20,
     paddingVertical:15,
     paddingHorizontal: 10,
@@ -276,17 +282,28 @@ const styles = StyleSheet.create({
     marginVertical:10,
   },
   photo:{
-    height: 200,
+    height: 300,
+    marginTop: 5, 
+    marginBottom: 5, 
   },
   modalContainer: {
-    width:'100%',  
-    flex: 3,
-    alignSelf: 'center',
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22, 
+  },
+  modalView: {
+    backgroundColor: "#000",
+    height: "100%", 
+  },
+  modalInfo: {
+    margin: "auto",
     backgroundColor: "white",
-    borderColor: '#000000',
-    borderRadius: 6,
-    padding: 10,
-    backgroundColor: '#000000'
+    height: "80%", 
+    width: "85%",
+    borderRadius: 15,
+    padding: 35,
+    alignItems: "center",
   },
   closeModal:{
     alignSelf: 'flex-end',

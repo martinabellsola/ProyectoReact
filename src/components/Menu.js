@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { db, auth } from "../firebase/config";
 
@@ -109,10 +110,22 @@ class Menu extends Component {
                         </>
                         ) : (
                         <>
-                            <Drawer.Screen name="Home" component={()=><Home loading={this.state.loading} />} />
-                            <Drawer.Screen name="Post" component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
-                            <Drawer.Screen name="Profile" component={()=><Profile signOut ={() => this.signOut() }/>}/>
-                            <Drawer.Screen name="Search" component={()=><Search />} />
+                            <Drawer.Screen 
+                                name="Home" 
+                                options={{drawerIcon: config => <Icon size={23} name="home"/>}}
+                                component={()=><Home loading={this.state.loading} />} />
+                            <Drawer.Screen 
+                                name="Post" 
+                                options= {{drawerIcon: config => <Icon size={23} name="plus"/>}}
+                                component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
+                            <Drawer.Screen 
+                                name="Profile"
+                                options= {{drawerIcon: config => <Icon size={23} name="user"/>}}
+                                component={()=><Profile signOut ={() => this.signOut() }/>}/>
+                            <Drawer.Screen 
+                                name="Search" 
+                                options= {{drawerIcon: config => <Icon size={23} name="search"/>}}
+                                component={()=><Search />} />
                         </>
                     )}
                     </Drawer.Navigator> 
