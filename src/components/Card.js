@@ -69,7 +69,7 @@ class Post extends Component {
 
   comment(com){
 
-    let comentario = {text: com, user: auth.currentUser.email, date: moment().format('LLLL')}
+    let comentario = {text: com, user: auth.currentUser.email, date: moment().format('ll')}
     db.collection("posteos").doc(this.props.id).update({
       comments: firebase.firestore.FieldValue.arrayUnion(comentario)
     }).then(()=>{
