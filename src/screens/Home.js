@@ -35,7 +35,7 @@ class Home extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{backgroundColor: "#e8e3e3"}}>
         {(this.state.loading === true) ? <ActivityIndicator size="large" color="pink" /> : 
           <FlatList
             data={this.state.post}

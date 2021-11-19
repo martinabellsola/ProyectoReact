@@ -45,13 +45,12 @@ class Menu extends Component {
 
 
     register(email, userName, password, url) {
-        console.log(url)
         auth
         .createUserWithEmailAndPassword(email, password)
         .then((userData) => {
             userData.user.updateProfile({
                 displayName: userName, 
-                photoUrl: url
+                photoURL: url
             })
         }).then((userData)=>{
             this.setState({

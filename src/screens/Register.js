@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, Modal } from "react-native";
-import CameraProfile from "../components/CameraProfile"
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, Modal, Image } from "react-native";
+
 class Register extends Component {
   constructor(){
     super();
@@ -8,58 +8,28 @@ class Register extends Component {
       email: '',
       password: '',
       userName: '',
-      url:'',
-      showModalPhoto: false
+      url: '../../assets/user.png',
     }
   }
-  openModalPhoto(){
-    this.setState({
-      showModalPhoto: true
-    })}
-  
-    closeModalPhoto(){
-    this.setState({
-      showModalPhoto: false
-    })}
 
-    onImageUpload(url){
-      this.setState({
-        url: url, 
-        showCamera: false
-      })
-    }
   render() {
     return (
       <View>
 
         <Text> {this.props.error} </Text>
-
-        <TouchableOpacity onPress={() => this.openModalPhoto()} style={styles.closeModal}>
-                <Text> Agregar foto de perfil </Text>
-        </TouchableOpacity>
-
-        <Modal  
-        style={styles.modalContainer}
-        visible= {this.state.showModalPhoto}
-        animationType="slide"
-        transparent={true}>
-              <CameraProfile onImageUpload={(url)=> this.onImageUpload(url)} />
-       <TouchableOpacity onPress={() => this.closeModalPhoto()} style={styles.closeModal}>
-                <Text> X </Text>
-        </TouchableOpacity>
-
-        </Modal>
-
+        
         <TextInput
           onChangeText={(text) => this.setState({ userName: text })}
           placeholder="User name"
           keyboardType="default"
         />
+
         <TextInput
           onChangeText={(text) => this.setState({ email: text })}  
           placeholder="email"
           keyboardType="email-address"
         />
+
         <TextInput
           onChangeText={(text) => this.setState({ password: text })}
           placeholder="password"

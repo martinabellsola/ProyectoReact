@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList} from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image} from "react-native";
 import { auth, db } from "../firebase/config";
 import Card from '../components/Card'
+
 class Profile extends Component{
     
   constructor(props) {
       super(props);
       this.state = {
         post: [],
-        loading: true
+        loading: true,
+        showModal: false
       }
     }
 
@@ -31,6 +33,12 @@ class Profile extends Component{
         })
       })
     }
+
+    openModal() {
+      this.setState({
+        showModal: true
+      })
+    }
     
     render() {
         return (
@@ -39,7 +47,21 @@ class Profile extends Component{
                 <ActivityIndicator size="large" color="pink" /> 
               :
               <View>
-                <Text> Nombre usuario: {auth.currentUser.displayName} </Text>
+                <View style={styles.containerData}>
+                  <Image 
+                    style={{width: 77, height: 77, borderRadius:"50%"}}
+                    source = {require("../../assets/user.png")}
+                  />
+                  <View>
+                    <Text style={{fontSize: 16, fontWeight: 600}}> {auth.currentUser.displayName} </Text>
+                    <TouchableOpacity
+                    style={styles.buttonProfilePicture}
+                    onPress={() => this.props.openModal()}
+                    >
+                      <Text style={{fontWeight: 600,}}> Editar foto de perfil </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
                 <Text> Email usuario: {auth.currentUser.email} </Text>
                 <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
                 <Text> Última sesión: {auth.currentUser.metadata.lastSignInTime} </Text>
@@ -72,6 +94,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "red",
+  },
+  containerData:{
+    display: "flex", 
+    flexDirection: "row",
+    justifyContent: "space-between", 
+    marginBottom: 5,
+  },
+  buttonProfilePicture:{
+    backgroundColor: "transparent",
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    textAlign: "center",
+    borderRadius: 4,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#dbdbdb",
   },
   textButton: {
     color: "#fff",
