@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image} from "react-native";
+import { Text, View, TextInput, Modal, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image} from "react-native";
 import { auth, db } from "../firebase/config";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import Card from '../components/Card'
 
 class Profile extends Component{
@@ -39,39 +40,86 @@ class Profile extends Component{
         showModal: true
       })
     }
+
+    closeModal() {
+      this.setState({
+        showModal: false
+      })
+    }
     
     render() {
         return (
-          <View>
+          <View style={{backgroundColor: "#fcfafa"}}>
             { this.state.loading === true ? 
                 <ActivityIndicator size="large" color="pink" /> 
               :
-              <View>
+              <View  style={{marginTop: 10}} >
                 <View style={styles.containerData}>
                   <Image 
-                    style={{width: 77, height: 77, borderRadius:"50%"}}
+                    style={{width: 77, height: 77, borderRadius:"50%", marginTop: 5}}
                     source = {require("../../assets/user.png")}
                   />
                   <View>
-                    <Text style={{fontSize: 16, fontWeight: 600}}> {auth.currentUser.displayName} </Text>
+                    <View style={styles.nameLog}>
+                      <Text style={{fontSize: 16, fontWeight: 600}}> {auth.currentUser.displayName} </Text>
+                      <TouchableOpacity
+                        onPress={() => this.props.signOut()}
+                      >
+                        <Icon style={{marginLeft: 10}} size={20} name="sign-out-alt" />
+                      </TouchableOpacity> 
+                    </View>
                     <TouchableOpacity
-                    style={styles.buttonProfilePicture}
-                    onPress={() => this.props.openModal()}
-                    >
-                      <Text style={{fontWeight: 600,}}> Editar foto de perfil </Text>
-                    </TouchableOpacity>
+                      style={styles.buttonProfilePicture}
+                      onPress={() => this.openModal()}
+                      >
+                        <Text style={{fontWeight: 600,}}> Editar foto de perfil </Text>
+                    </TouchableOpacity>                      
                   </View>
                 </View>
-                <Text> Email usuario: {auth.currentUser.email} </Text>
-                <Text> Fecha de creación: {auth.currentUser.metadata.creationTime} </Text>
-                <Text> Última sesión: {auth.currentUser.metadata.lastSignInTime} </Text>
-                <Text> Cantidad de posteos realizados: {this.state.post.length} </Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.props.signOut()}
+
+                { ! this.state.showModal ? 
+                  null
+                :
+                <Modal 
+                  style={styles.modalContainer}
+                  visible={this.state.showModal}
+                  animationType="fade"
+                  transparent={true}
                 >
-                  <Text style={styles.textButton}> Cerrar sesión </Text>
-                </TouchableOpacity>
+                  <View style={styles.modalView}> 
+                    <View style={styles.modalInfo}> 
+                      <View style={styles.menuLike}>
+                        <Text style={{fontSize: 16, fontWeight: 600}}> Me gusta</Text>
+                        <TouchableOpacity style={{marginLeft: 100}} onPress={() => this.closeModal()}>
+                          <Icon size={20} name="times" />
+                        </TouchableOpacity>
+                      </View>
+                      <Text>——————————————</Text>
+                    </View>
+                  </View>  
+                </Modal>
+                }
+
+                <Text  style={{marginLeft: 10, color: "#8e8e8e", marginRight: 10, textAlign: "center"}}>————————————————————</Text>
+                <View style={{marginLeft: 18}} >
+                  <View style={styles.descrip}>
+                    <Text style={{fontWeight:600, color: "#262626"}}>Contacto:</Text>   
+                    <Text>{auth.currentUser.email} </Text>   
+                  </View>
+                  <View style={styles.descrip}>
+                    <Text style={{fontWeight:600, color: "#262626"}}>Fecha de creación:</Text>   
+                    <Text>{auth.currentUser.metadata.creationTime} </Text>   
+                  </View>
+                  <View style={styles.descrip}>
+                    <Text style={{fontWeight:600, color: "#262626"}}>Última sesión:</Text>   
+                    <Text>{auth.currentUser.metadata.lastSignInTime}</Text>   
+                  </View>
+                  <View style={styles.descrip}>
+                    <Text style={{fontWeight:600, color: "#262626"}}>Publicaciones:</Text>   
+                    <Text>{this.state.post.length}  </Text>   
+                  </View>
+                </View>
+                <Text  style={{marginLeft: 10, color: "#8e8e8e", marginRight: 10, textAlign: "center"}}>————————————————————</Text>
                 <FlatList
                   data={this.state.post}
                   keyExtractor={(post) => post.id.toString()}
@@ -98,8 +146,14 @@ const styles = StyleSheet.create({
   containerData:{
     display: "flex", 
     flexDirection: "row",
-    justifyContent: "space-between", 
     marginBottom: 5,
+    justifyContent: "space-evenly",
+  },
+  nameLog: {
+    alignItems: "center",
+    display: "flex", 
+    flexDirection: "row",
+    marginTop: 15,
   },
   buttonProfilePicture:{
     backgroundColor: "transparent",
@@ -110,9 +164,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "#dbdbdb",
+    marginTop: 10
   },
   textButton: {
     color: "#fff",
+  },
+  descrip: {
+    display: "flex", 
+    flexDirection: "coloumn",
+    marginTop: 5, 
   },
 });
 export default Profile;
