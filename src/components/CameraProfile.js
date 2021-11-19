@@ -69,7 +69,7 @@ class myCamera extends Component {
             photo: "", 
             showCamera: true,
         })
-        this.props.drawerProps.navigation.navigate("Home")
+        this.props.Props.navigation.navigate("Home")
     }
 
     openModal(){
@@ -83,8 +83,6 @@ class myCamera extends Component {
           showModal: false
         }
     )}
-
-   
    
     render(){
         return (

@@ -297,15 +297,14 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   container:{
-    marginTop: 20,
     paddingVertical:15,
     paddingHorizontal: 10,
     borderWidth:1,
     borderColor: '#ccc',
     borderStyle: 'solid',
     borderRadius: 6,
-    marginVertical:10,
-    backgroundColor: "white"
+    backgroundColor: "white", 
+    marginBottom: 10
   },
   photo:{
     height: 300,
