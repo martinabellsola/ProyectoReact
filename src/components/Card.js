@@ -304,7 +304,9 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderRadius: 6,
     backgroundColor: "white", 
-    marginBottom: 10
+    marginBottom: 10, 
+    marginLeft: 5,
+    marginRight: 5
   },
   photo:{
     height: 300,
