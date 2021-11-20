@@ -54,7 +54,7 @@ class Comments extends Component {
                  
                     <FlatList style={styles.FlatList}
                         data={this.state.comentarios}
-                        keyExtractor={(comentario) => comentario.date.toString()}
+                        keyExtractor={(comentario) => comentario.keydate.toString()}
                         renderItem={({item}) => ( 
                       
                         <View style={styles.wrap}>
