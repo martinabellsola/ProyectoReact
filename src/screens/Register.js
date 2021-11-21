@@ -25,7 +25,7 @@ class Register extends Component {
         
         <TextInput
           onChangeText={(text) => this.setState({ userName: text })}
-          placeholder="User name"
+          placeholder="user name"
           keyboardType="default"
           style={styles.input}
         />
@@ -113,7 +113,7 @@ class Register extends Component {
 
     titleText:{
       fontFamily: 'Baskerville',
-      fontSize: 50,
+      fontSize: 25,
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: 20

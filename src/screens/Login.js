@@ -1,3 +1,4 @@
+import { WhiteBalance } from 'expo-camera/build/Camera.types';
 import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { db } from '../firebase/config';
@@ -36,16 +37,16 @@ class Login extends Component {
         />
 
         {(this.state.email !== '' && this.state.password !== '') ? (
-          <TouchableOpacity
+          <TouchableOpacity style={styles.loginButton}
           onPress={() => this.props.login(this.state.email, this.state.password)}
             >
-            <Text style={styles.textButton}>Login</Text>
+            <Text style={styles.loginText} >Login</Text>
           </TouchableOpacity>
           ):(
           <TouchableOpacity
             style={styles.deshabilitado}
           >
-            <Text style={styles.textButton}>Login</Text>
+            <Text style={styles.loginText} >Login</Text>
           </TouchableOpacity> 
         )} 
 
@@ -60,19 +61,29 @@ class Login extends Component {
 
   const styles = StyleSheet.create({
 
-  textButton: {
+  loginButton: {
+    backgroundColor:'green',
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    textAlign: "center",
+    borderRadius: 4,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "green",
+   
+  },
+  loginText:{
     color: "#fff",
     fontFamily: 'Baskerville',
     fontSize: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 3
+    
   },
-
   deshabilitado: {
       backgroundColor:'gray',
-      paddingHorizontal: 10,
-      paddingVertical: 6,
+      paddingHorizontal: 24,
+      paddingVertical: 10,
       textAlign: "center",
       borderRadius: 4,
       borderWidth: 1,
@@ -88,7 +99,7 @@ class Login extends Component {
     },
     titleText:{
       fontFamily: 'Baskerville',
-      fontSize: 50,
+      fontSize: 37,
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: 20

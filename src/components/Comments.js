@@ -49,7 +49,7 @@ class Comments extends Component {
                onChangeText={(com)=>this.setState({comentario: com })}
                multiline
                />
-               <TouchableOpacity onPress={()=>this.props.comentar(this.state.comentario)}> <Text>Comentar</Text></TouchableOpacity>
+               <TouchableOpacity style={styles.botonComentar} onPress={()=>this.props.comentar(this.state.comentario)}> <Text>Comentar</Text></TouchableOpacity>
                {(this.state.comentarios.length !== 0)?(
                  
                     <FlatList style={styles.FlatList}
@@ -107,6 +107,18 @@ const styles = StyleSheet.create({
       },
       wrap:{
         flexDirection: "row"
+      },
+      botonComentar:{
+        backgroundColor: "transparent",
+        paddingHorizontal: 9,
+        paddingVertical: 5,
+        textAlign: "center",
+        borderWidth: 1,
+        borderRadius: 50,
+        borderStyle: "solid",
+        borderColor: "#dbdbdb",
+        marginTop: 10,
+        marginLeft: 160,
       }
      
 });
