@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import Comments from '../components/Comments'
 import moment from 'moment';
 
-class Post extends Component {
+class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +22,6 @@ class Post extends Component {
   
   componentDidMount(){
     this.recieveLikes();
-    console.log(this.props)
   }
 
   recieveLikes(){
@@ -224,7 +223,7 @@ class Post extends Component {
                   data={this.props.post.likes}
                   keyExtractor={(post) => post}
                   renderItem={({item}) => (
-                    <Text style={{marginTop: 5}}>{item}</Text>
+                      <Text style={{marginTop: 5}}>{item}</Text>
                   )}
                 />
               </View>
@@ -351,4 +350,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Post
+export default Card

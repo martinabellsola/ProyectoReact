@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TextInput, Modal, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image} from "react-native";
 import { auth, db } from "../firebase/config";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Card from '../components/Card'
+import CardProfile from "../components/CardProfile"
 
 class Profile extends Component{
     
@@ -11,7 +11,8 @@ class Profile extends Component{
       this.state = {
         post: [],
         loading: true,
-        showModal: false
+        showModal: false, 
+        showModalPhoto: false
       }
     }
 
@@ -46,7 +47,7 @@ class Profile extends Component{
         showModal: false
       })
     }
-    
+     
     render() {
         return (
           <View style={{backgroundColor: "#fcfafa"}}>
@@ -86,17 +87,7 @@ class Profile extends Component{
                   animationType="fade"
                   transparent={true}
                 >
-                  <View style={styles.modalView}> 
-                    <View style={styles.modalInfo}> 
-                      <View style={styles.menuLike}>
-                        <Text style={{fontSize: 16, fontWeight: 600}}> Me gusta</Text>
-                        <TouchableOpacity style={{marginLeft: 100}} onPress={() => this.closeModal()}>
-                          <Icon size={20} name="times" />
-                        </TouchableOpacity>
-                      </View>
-                      <Text>——————————————</Text>
-                    </View>
-                  </View>  
+                  <Text>Fotito perfil</Text>
                 </Modal>
                 }
 
@@ -124,9 +115,31 @@ class Profile extends Component{
                   data={this.state.post}
                   keyExtractor={(post) => post.id.toString()}
                   renderItem={({item}) => (
-                    <Card post={item.data} id={item.id} photo={item.photo} />
+                    <CardProfile post={item.data} photo={item.data.photo} />
                   )}
                 />   
+                { this.state.showModalPhoto ? 
+                      false
+                    :
+                      <Modal 
+                        style={styles.modalContainer}
+                        visible={this.state.showModal}
+                        animationType="fade"
+                        transparent={true}
+                      >
+                        <View style={styles.modalView}> 
+                          <View style={styles.modalInfo}> 
+                            <View style={styles.menuLike}>
+                              <Text style={{fontSize: 16, fontWeight: 600}}> Me gusta</Text>
+                              <TouchableOpacity style={{marginLeft: 100}} onPress={() => this.closeModal()}>
+                                <Icon size={20} name="times" />
+                              </TouchableOpacity>
+                            </View>
+                            <Text>——————————————</Text>
+                          </View>
+                        </View>  
+                      </Modal>
+                    }
              </View> }
           </View>
         );
