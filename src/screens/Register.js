@@ -8,7 +8,7 @@ class Register extends Component {
       email: '',
       password: '',
       userName: '',
-      url: '../../assets/user.png',
+      url: 'https://cdhcolima.org.mx/wp-content/uploads/2016/11/user.png',
     }
   }
 
@@ -60,7 +60,7 @@ class Register extends Component {
         )} 
 
         <TouchableOpacity onPress={()=> this.NavigateToLogin()}>
-        <Text> ¿Ya tenés usuario? Iniciar Sesión</Text>
+          <Text> ¿Ya tenés usuario? Iniciar Sesión</Text>
         </TouchableOpacity>
         
         </View>

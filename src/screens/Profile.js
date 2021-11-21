@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TextInput, Modal, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image} from "react-native";
 import { auth, db } from "../firebase/config";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import CardProfile from "../components/CardProfile"
-
+import CardProfile from "../components/CardProfile";
 import CameraProfile from '../components/CameraProfile'
 
 class Profile extends Component{
@@ -61,13 +60,13 @@ class Profile extends Component{
         return (
           <View style={{backgroundColor: "#fcfafa"}}>
             { this.state.loading === true ? 
-                <ActivityIndicator size="large" color="pink" /> 
+              <ActivityIndicator size="large" color="pink" /> 
               :
-              <View  style={{marginTop: 10}} >
+              <View style={{marginTop: 10}} >
                 <View style={styles.containerData}>
                   <Image 
                     style={{width: 77, height: 77, borderRadius:"50%", marginTop: 5}}
-                    source = {auth.currentUser.photoURL}
+                    source = {this.props.userData.photoURL}
                   />
                   <View>
                     <View style={styles.nameLog}>
@@ -81,8 +80,8 @@ class Profile extends Component{
                     <TouchableOpacity
                       style={styles.buttonProfilePicture}
                       onPress={() => this.openModal()}
-                      >
-                        <Text style={{fontWeight: 600,}}> Editar foto de perfil </Text>
+                    >
+                      <Text style={{fontWeight: 600,}}> Editar foto de perfil </Text>
                     </TouchableOpacity>                      
                   </View>
                 </View>
@@ -139,35 +138,14 @@ class Profile extends Component{
                   </View>
                 </View>
                 <Text  style={{marginLeft: 10, color: "#8e8e8e", marginRight: 10, textAlign: "center"}}>————————————————————</Text>
-                <FlatList
-                  data={this.state.post}
-                  keyExtractor={(post) => post.id.toString()}
-                  renderItem={({item}) => (
-                    <CardProfile post={item.data} photo={item.data.photo} />
-                  )}
-                />   
-                { this.state.showModalPhoto ? 
-                      false
-                    :
-                      <Modal 
-                        style={styles.modalContainer}
-                        visible={this.state.showModal}
-                        animationType="fade"
-                        transparent={true}
-                      >
-                        <View style={styles.modalView}> 
-                          <View style={styles.modalInfo}> 
-                            <View style={styles.menuLike}>
-                              <Text style={{fontSize: 16, fontWeight: 600}}> Me gusta</Text>
-                              <TouchableOpacity style={{marginLeft: 100}} onPress={() => this.closeModal()}>
-                                <Icon size={20} name="times" />
-                              </TouchableOpacity>
-                            </View>
-                            <Text>——————————————</Text>
-                          </View>
-                        </View>  
-                      </Modal>
-                    }
+                  <FlatList
+                    numColumns={2}
+                    data={this.state.post}
+                    keyExtractor={(post) => post.id.toString()}
+                    renderItem={({item}) => (
+                      <CardProfile post={item.data} photo={item.data.photo} id={item.id}/>
+                    )}
+                  /> 
              </View> }
           </View>
         );

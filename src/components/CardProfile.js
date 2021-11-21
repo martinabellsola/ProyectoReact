@@ -3,21 +3,20 @@ import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator,
 import { db, auth, storage} from "../firebase/config";
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Comments from '../components/Comments'
 import moment from 'moment';
+import Comments from './Comments'
 
-class Card extends Component {
+
+class CardProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        likes: 0,
+        likes: 0, 
         liked: false,
         showModalPhoto: false,
-        showModalComents: false,
-        showModalLikes: false,
     }
   }  
-
+  
   componentDidMount(){
     this.recieveLikes();
   }
@@ -36,7 +35,7 @@ class Card extends Component {
       })
     }
   }
-  
+
   like(id){
     db.collection("posteos").doc(id).update({
       likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email + ", ")
@@ -65,6 +64,21 @@ class Card extends Component {
     })  
   };
 
+  comment(com){
+    let comentario = {text: com, user: auth.currentUser.email, date: moment().format('ll'), keydate: Date.now()}
+    db.collection("posteos").doc(this.props.id).update({
+      comments: firebase.firestore.FieldValue.arrayUnion(comentario)
+    }).then(()=>{
+    let ArrayComentarios = this.state.comments
+    ArrayComentarios.push(comentario)
+    this.setState({
+      comments: ArrayComentarios
+    })
+    }).catch((err)=> {
+      console.log(err)
+    })  
+  }
+
   openModalComents() {
     this.setState({
       showModalComents: true
@@ -80,77 +94,85 @@ class Card extends Component {
   openModalPhoto(){
     this.setState({
       showModalPhoto: true
-    })  
-  }
+    }) 
+  } 
+
+  closeModalPhoto(){
+    this.setState({
+      showModalPhoto: false
+    }) 
+  } 
 
   render() {
     return (
       <View>
-        <View> 
+        <View>
             <TouchableOpacity onPress={()=> this.openModalPhoto()}>
-                <Image style={{height: 120, width: 120, flexShrink: 3}} source={this.props.photo}/>
+                <Image style={{height: 145, width: 145, marginHorizontal: 5, marginVertical: 5}} source={this.props.photo}/>
             </TouchableOpacity>
         </View>
-
         { ! this.state.showModalPhoto ? 
             null
-          :
-          <Modal 
-            style={styles.modalContainer}
-            visible={this.state.showModalLikes}
-            animationType="fade"
-            transparent={true}
-          >
-            <View style={styles.modalView}>
-               <View style={styles.modalInfo}>  
-                    <View style={styles.userNameFrame}>
-                        <View style={styles.userNameFoto}>
-                            <Image 
-                                style={{width: 32, height: 32, borderRadius:"50%"}}
-                                source = {require("../../assets/user.png")}
-                            />
-                            <Text style={styles.userName}> {this.props.post.user} </Text>
+        :
+            <Modal 
+                style={styles.modalContainer}
+                visible={this.state.showModalLikes}
+                animationType="fade"
+                transparent={true}
+            >
+                <View style={styles.modalView}>
+                    <View style={styles.modalInfo}>  
+                        <View style={styles.userNameFrame}>
+                            <View style={styles.userNameFoto}>
+                                <Image 
+                                    style={{width: 32, height: 32, borderRadius:"50%"}}
+                                    source = {auth.currentUser.photoURL}
+                                />
+                                <Text style={styles.userName}> {this.props.post.user} </Text>
+                                <TouchableOpacity onPress={()=> this.closeModalPhoto()} > 
+                                    <Icon style={{color:"#8e8e8e", paddingLeft: 92, paddingTop: 5}}  size={15} name="arrow-right" solid />
+                                </TouchableOpacity>        
+                            </View>
                         </View>
-                    </View>
 
-                <Image style={styles.photo} source={this.props.photo}/>
-    
-                <View style={styles.action}>
-                    { ! this.state.liked ?  
-                    <TouchableOpacity onPress={() => this.like(this.props.id)} style={{paddingRight: 10}}> 
-                        <Icon style={{color:this.state.colorLiked}}  size={20} name="heart" />
-                    </TouchableOpacity>
-                    : 
-                    <TouchableOpacity onPress={() => this.dislike(this.props.id)} style={{paddingRight: 10}}> 
-                        <Icon style={{color:this.state.colorLiked}} size={20} name="heart" solid />
-                    </TouchableOpacity>
-                    }
-                    <TouchableOpacity onPress={() => this.openModalComents()}> 
-                        <Icon size={20} name="comment"/>
-                    </TouchableOpacity>
-                </View>
-                    
-                { ! this.state.showModalComents ? 
-                    null
-                :
-                    <Modal 
-                        style={styles.modalContainer}
-                        visible={this.state.showModalComents}
-                        animationType="fade"
-                        transparent={false}
-                    >
-                        <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
-                            <Text> X </Text>
-                        </TouchableOpacity>
-                    
-                        <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
-                    
-                    </Modal>
-                }
+                        <Image style={styles.photo} source={this.props.photo}/>
+
+                        <View style={styles.action}>
+                            { ! this.state.liked ?  
+                            <TouchableOpacity onPress={() => this.like(this.props.id)} style={{paddingRight: 10}}> 
+                                <Icon style={{color:this.state.colorLiked}}  size={20} name="heart" />
+                            </TouchableOpacity>
+                            : 
+                            <TouchableOpacity onPress={() => this.dislike(this.props.id)} style={{paddingRight: 10}}> 
+                                <Icon style={{color:this.state.colorLiked}} size={20} name="heart" solid />
+                            </TouchableOpacity>
+                            }
+
+                            <TouchableOpacity onPress={() => this.openModalComents()}> 
+                                <Icon size={20} name="comment"/>
+                            </TouchableOpacity>
+                            
+                            { ! this.state.showModalComents ? 
+                                null
+                            :
+                            <Modal 
+                                style={styles.modalContainer}
+                                visible={this.state.showModalComents}
+                                animationType="fade"
+                                transparent={false}
+                            >
+                                <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
+                                    <Text> X </Text>
+                                </TouchableOpacity>
+                            
+                                <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
+                            </Modal>
+                            }
+                        </View>
                  </View>
                  </View>
             </Modal>
-            }
+        }
         </View>
     );
   }    
@@ -162,7 +184,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     }, 
     modalView: {
-        backgroundColor: "rgba(52,52,52,0.70)",
+        backgroundColor: "rgba(52,52,52,0.75)",
         height: "100%", 
     },
     modalInfo: {
@@ -194,6 +216,7 @@ const styles = StyleSheet.create({
       display: "flex", 
       flexDirection: "row",
       justifyContent: "flex-start", 
+      alignItems:"center"
     },
     menuLike: {
       display: "flex", 
@@ -214,6 +237,6 @@ const styles = StyleSheet.create({
       marginTop:2,
       borderRadius: 4,
     },
-  });
+});
 
-export default Card
+export default CardProfile

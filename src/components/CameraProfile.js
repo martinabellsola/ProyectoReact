@@ -26,7 +26,6 @@ class myCamera extends Component {
             })
         })
         .catch((err)=> console.log(err))
-
         Camera.getAvailableCameraTypesAsync()
         .then((res)=> console.log(res))
     }
@@ -47,29 +46,26 @@ class myCamera extends Component {
         fetch(this.state.photo)
         .then((res)=> res.blob())
             .then((image)=> {
-                const ref = storage.ref(`photosProfile/${Date.now()}.jpg`) //no existe pero te lo crea 
-                ref.put(image) //metodo put de firebase
+                const ref = storage.ref(`photosProfile/${Date.now()}.jpg`) 
+                ref.put(image) 
                 .then(()=> {
                     ref.getDownloadURL() 
                     .then((url)=> {
                         this.props.onImageUpload(url)
                            const user = auth.currentUser;
-
-                            user.updateProfile({
-                            photoURL: url
-                            }).then(() => {
-                           console.log('funciona!');
-                             this.closeModal()
-                            }).catch((error) => {
-                            console.log('no funciona :(');
+                                user.updateProfile({
+                                    photoURL: url
+                                }).then(() => {
+                                    console.log('funciona!');
+                                    this.closeModal()
+                                }).catch((error) => {
+                                    console.log('no funciona :(');
                             
-                    });  
+                                });  
+                    })
                 })
-            })
-        }) 
-  
+            }) 
         .catch(err => console.log(err))
-        
     }
    
     cancelar(){
