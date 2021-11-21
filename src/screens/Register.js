@@ -37,7 +37,7 @@ class Register extends Component {
           secureTextEntry={true}
         />
 
-        {(this.state.email !== ''&& this.state.userName !== '' && this.state.password !== '') ? (
+        {(this.state.email !== '' && this.state.userName !== '' && this.state.password !== '') ? (
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.props.register(this.state.email, this.state.userName, this.state.password, this.state.url)}

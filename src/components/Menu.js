@@ -122,7 +122,7 @@ class Menu extends Component {
                             <Drawer.Screen 
                                 name="Profile"
                                 options= {{drawerIcon: config => <Icon size={23} name="user"/>}}
-                                component={()=><Profile signOut ={() => this.signOut() }/>}/>
+                                component={(drawerProps)=><Profile signOut ={() => this.signOut() } drawerProps={drawerProps}/>}/>
                             <Drawer.Screen 
                                 name="Search" 
                                 options= {{drawerIcon: config => <Icon size={23} name="search"/>, unmountOnBlur: true}}

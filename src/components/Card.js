@@ -154,7 +154,7 @@ class Post extends Component {
         { ! this.state.liked ?  
           <TouchableOpacity onPress={() => this.like(this.props.id)} style={{paddingRight:10}}> 
             <Icon style={{color:this.state.colorLiked}}  size={20} name="heart" />
-          </TouchableOpacity>
+          </TouchableOpacity >
           : 
           <TouchableOpacity onPress={() => this.dislike(this.props.id)} style={{paddingRight:10}}> 
             <Icon style={{color:this.state.colorLiked}} size={20} name="heart" solid />
