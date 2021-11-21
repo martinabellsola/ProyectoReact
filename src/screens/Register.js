@@ -18,20 +18,23 @@ class Register extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
 
         <Text> {this.props.error} </Text>
+        <Text style={styles.titleText}> ¡Ya puedes crear tu usuario! </Text>
         
         <TextInput
           onChangeText={(text) => this.setState({ userName: text })}
           placeholder="User name"
           keyboardType="default"
+          style={styles.input}
         />
 
         <TextInput
           onChangeText={(text) => this.setState({ email: text })}  
           placeholder="email"
           keyboardType="email-address"
+          style={styles.input}
         />
 
         <TextInput
@@ -39,6 +42,7 @@ class Register extends Component {
           placeholder="password"
           keyboardType="default"
           secureTextEntry={true}
+          style={styles.input}
         />
 
 
@@ -60,7 +64,7 @@ class Register extends Component {
         )} 
 
         <TouchableOpacity onPress={()=> this.NavigateToLogin()}>
-        <Text> ¿Ya tenés usuario? Iniciar Sesión</Text>
+        <Text style={styles.textnavigation}> ¿Ya tenés usuario? Iniciar Sesión</Text>
         </TouchableOpacity>
         
         </View>
@@ -69,6 +73,25 @@ class Register extends Component {
   }
 
   const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "#E2F2F3",
+    },
+
+    input: {
+      width: 300,
+      fontFamily: 'Baskerville',
+      fontSize: 20,
+      height: 44,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: 'black',
+      marginVertical: 10,
+      marginBottom: 15
+    },
+
     button: {
       backgroundColor: "#28A745",
       paddingHorizontal: 10,
@@ -81,7 +104,21 @@ class Register extends Component {
     },
     textButton: {
       color: "#fff",
+      fontFamily: 'Baskerville',
+      fontSize: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 3
     },
+
+    titleText:{
+      fontFamily: 'Baskerville',
+      fontSize: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 20
+    },
+
     deshabilitado: {
       backgroundColor:'gray',
       paddingHorizontal: 10,
@@ -119,6 +156,11 @@ class Register extends Component {
       marginTop:2,
       borderRadius: 4,
     },
+    textnavigation: {
+      marginTop: 10,
+      fontFamily: 'Baskerville',
+      fontSize: 16,
+    }
   });
 
 export default Register;
