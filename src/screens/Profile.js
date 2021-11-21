@@ -47,8 +47,9 @@ class Profile extends Component{
       this.setState({
         showModal: false
       })
+      this.props.drawerProps.navigation.navigate("Home")  
     }
-
+ 
     onImageUpload(url){
       this.setState({
         url: url, 
@@ -92,16 +93,16 @@ class Profile extends Component{
                 <Modal 
                   style={styles.modalContainer}
                   visible={this.state.showModal}
-                  animationType="fade"
-                  transparent={true}
+                  animationType="slide"
+                  transparent={false}
                 >
                   { this.state.showCamera ?
                     <CameraProfile onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps}  />
                   : 
-                    <View style={styles.modalView}>
-                      <Text> ¡Tu foto de perfil fue cambiada exitosamente!</Text>
-                      <TouchableOpacity onPress={() => this.closeModal()}> 
-                        <Text> Apreta para volver al perfil </Text>
+                    <View style={styles.formContainer}>
+                      <Text style={{marginLeft: 8, marginRight: 8, textAlign: "center", fontSize: 14, fontWeight:600, marginTop: 10, marginBottom: 10}} > ¡Tu foto de perfil fue cambiada exitosamente!</Text>
+                      <TouchableOpacity style={styles.buttonProfilePicture} onPress={() => this.closeModal()}> 
+                        <Text> Apreta para volver al home </Text>
                       </TouchableOpacity>
                     </View>
                   }
@@ -171,9 +172,12 @@ const styles = StyleSheet.create({
     flexDirection: "coloumn",
     marginTop: 5, 
   },
-  modalView: {
-    backgroundColor: "rgba(52,52,52,0.70)",
-    height: "100%", 
-  },
+  formContainer:{
+    paddingHorizontal:10,
+    display: "flex", 
+    flex: 1,
+    justifyContent: "center", 
+    alignItems: "center"
+},
 });
 export default Profile;

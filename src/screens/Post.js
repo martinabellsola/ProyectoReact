@@ -44,8 +44,7 @@ class Post extends Component {
           this.state.showCamera ? 
             <MyCamera onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps} /> 
             :  
-            <View style={styles.formContainer}>  
-                
+            <View style={styles.formContainer}>   
                 <Image 
                     style={{width: "80%", flex: 2, marginTop: 10}}
                     source = {{uri: this.state.url}}

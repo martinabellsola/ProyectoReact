@@ -156,10 +156,14 @@ class Card extends Component {
         </TouchableOpacity>
         </View>
         
-        <TouchableOpacity onPress={() => this.openModalLikes()}>
+        { this.props.post.likes.length === 0 ? 
           <Text style={{fontWeight: 600, color: "#262626"}} > {this.props.post.likes.length} Me gusta </Text>
-        </TouchableOpacity> 
-        
+          :
+          <TouchableOpacity onPress={() => this.openModalLikes()}>
+            <Text style={{fontWeight: 600, color: "#262626"}} > {this.props.post.likes.length} Me gusta </Text>
+          </TouchableOpacity> 
+        }
+              
         <View style={styles.descrip}>
           <Text style={{fontWeight:600, color: "#262626"}}>{this.props.post.user}</Text>   
           <Text> {this.props.post.description}</Text>   
@@ -214,7 +218,7 @@ class Card extends Component {
                   data={this.props.post.likes}
                   keyExtractor={(post) => post}
                   renderItem={({item}) => (
-                      <Text style={{marginTop: 5}}>{item}</Text>
+                    <Text style={{marginTop: 5}}>{item}</Text>
                   )}
                 />
               </View>
