@@ -18,23 +18,25 @@ class Login extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Text> {this.props.error} </Text>
+        <Text style={styles.titleText}> Bienvenido a Hooves </Text>
         <TextInput
           onChangeText={(text) => this.setState({ email: text })}
           placeholder="email"
           keyboardType="email-address"
+          style={styles.input}
         />
         <TextInput
           onChangeText={(text) => this.setState({ password: text })}
           placeholder="password"
           keyboardType="email-address"
           secureTextEntry={true}
+          style={styles.input}
         />
 
         {(this.state.email !== '' && this.state.password !== '') ? (
           <TouchableOpacity
-          style={styles.button}
           onPress={() => this.props.login(this.state.email, this.state.password)}
             >
             <Text style={styles.textButton}>Login</Text>
@@ -48,7 +50,7 @@ class Login extends Component {
         )} 
 
       <TouchableOpacity onPress={()=> this.NavigateToRegister()}>
-        <Text> ¿No tenes una sesión? Registate! </Text>
+        <Text style={styles.textnavigation}> ¿No tenes una sesión? Registate! </Text>
         </TouchableOpacity>
 
       </View>
@@ -57,20 +59,17 @@ class Login extends Component {
 }
 
   const styles = StyleSheet.create({
-    button: {
-      backgroundColor: "#28A745",
-      paddingHorizontal: 10,
-      paddingVertical: 6,
-      textAlign: "center",
-      borderRadius: 4,
-      borderWidth: 1,
-      borderStyle: "solid",
-      borderColor: "#28A745",
-    },
-    textButton: {
-      color: "#fff",
-    },
-    deshabilitado: {
+
+  textButton: {
+    color: "#fff",
+    fontFamily: 'Baskerville',
+    fontSize: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 3
+  },
+
+  deshabilitado: {
       backgroundColor:'gray',
       paddingHorizontal: 10,
       paddingVertical: 6,
@@ -79,7 +78,37 @@ class Login extends Component {
       borderWidth: 1,
       borderStyle: "solid",
       borderColor: "gray",
+  },
+
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "#E2F2F3",
     },
+    titleText:{
+      fontFamily: 'Baskerville',
+      fontSize: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 20
+    },
+    input: {
+      width: 300,
+      fontFamily: 'Baskerville',
+      fontSize: 20,
+      height: 44,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: 'black',
+      marginVertical: 10,
+      marginBottom: 15
+    },
+    textnavigation: {
+      marginTop: 10,
+      fontFamily: 'Baskerville',
+      fontSize: 16,
+    }
   });
 
 export default Login;
