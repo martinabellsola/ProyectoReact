@@ -30,7 +30,7 @@ class Post extends Component {
                description: '', 
                url: '',
             })
-            this.props.drawerProps.navigation.navigate("Home")
+            this.props.drawerProps.navigation.navigate("Home") 
         }).catch(err => console.log(err))
     }
 
@@ -44,7 +44,8 @@ class Post extends Component {
     render() {
         return (
           this.state.showCamera ? 
-            <MyCamera onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps} /> :  
+            <MyCamera onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps} /> 
+            :  
             <View style={styles.formContainer}>  
                 <TextInput 
                     style={styles.input}

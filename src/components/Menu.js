@@ -104,30 +104,29 @@ class Menu extends Component {
                 <ActivityIndicator size="large" color="purple"/> 
             ):(
                 <NavigationContainer>
-                    <Drawer.Navigator  
-                        > 
+                    <Drawer.Navigator> 
                     {(this.state.loggedIn === false) ? (
                         <>
-                            <Drawer.Screen name="Login" component={() => <Login  error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
-                            <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} />
+                            <Drawer.Screen name="Login" component={(drawerProps) => <Login drawerProps={drawerProps} error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
+                            <Drawer.Screen name="Register" component={(drawerProps)=><Register drawerProps={drawerProps} error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} />
                         </>
                         ) : (
                         <>
                             <Drawer.Screen 
                                 name="Home" 
-                                options={{tabBarIcon: config => <Icon size={23} name="home"/>}}
+                                options={{drawerIcon: config => <Icon size={23} name="home"/>}}
                                 component={()=><Home loading={this.state.loading} />} />
                             <Drawer.Screen 
                                 name="Post" 
-                                options= {{tabBarIcon: config => <Icon size={23} name="plus"/>, unmountOnBlur: true}}
+                                options= {{drawerIcon: config => <Icon size={23} name="plus"/>, unmountOnBlur: true}}
                                 component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
                             <Drawer.Screen 
                                 name="Profile"
-                                options= {{tabBarIcon: config => <Icon size={23} name="user"/>}}
-                                component={()=><Profile signOut ={() => this.signOut() }/>}/>
+                                options= {{drawerIcon: config => <Icon size={23} name="user"/>}}
+                                component={(drawerProps)=><Profile signOut ={() => this.signOut() } drawerProps={drawerProps}/>}/>
                             <Drawer.Screen 
                                 name="Search" 
-                                options= {{tabBarIcon: config => <Icon size={23} name="search"/>, unmountOnBlur: true}}
+                                options= {{drawerIcon: config => <Icon size={23} name="search"/>, unmountOnBlur: true}}
                                 component={()=><Search />} />
                         </>
                     )}

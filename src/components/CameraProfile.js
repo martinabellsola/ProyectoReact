@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import { Camera } from 'expo-camera';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+
 class myCamera extends Component {
     constructor(props){
         super(props); 
@@ -46,19 +47,27 @@ class myCamera extends Component {
         fetch(this.state.photo)
         .then((res)=> res.blob())
             .then((image)=> {
-                const ref = storage.ref(`photos/${Date.now()}.jpg`) //no existe pero te lo crea 
+                const ref = storage.ref(`photosProfile/${Date.now()}.jpg`) //no existe pero te lo crea 
                 ref.put(image) //metodo put de firebase
                 .then(()=> {
                     ref.getDownloadURL() 
                     .then((url)=> {
                         this.props.onImageUpload(url)
-                        this.setState({
-                            photo: ""
-                        })
-                    })
+                           const user = auth.currentUser;
+
+                            user.updateProfile({
+                            photoURL: url
+                            }).then(() => {
+                           console.log('funciona!');
+                             this.closeModal()
+                            }).catch((error) => {
+                            console.log('no funciona :(');
+                            
+                    });  
                 })
-            }) 
-            
+            })
+        }) 
+  
         .catch(err => console.log(err))
         
     }
@@ -119,9 +128,9 @@ class myCamera extends Component {
                             </View>  
                         </Modal>
                         }
-                            <Text style={{fontWeight:600, fontSize: 14}}> Crea una nueva publicación </Text>
+                            <Text style={{fontWeight:600, fontSize: 14}}> Actualizá tu foto de perfil! </Text>
                         <TouchableOpacity onPress={()=>this.savePhoto()}>
-                            <Text style={{color:"#0095f6", fontWeight:400, fontSize: 14}}> Compartir</Text>
+                            <Text style={{color:"#0095f6", fontWeight:400, fontSize: 14}}> Actualizar</Text>
                         </TouchableOpacity>
                      </View>
                      <Image 
@@ -150,6 +159,13 @@ class myCamera extends Component {
 export default myCamera
 
 const styles = StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22, 
+        backgroundColor: 'pink'
+      },
     menu: {
         display: "flex", 
         flexDirection: "row",

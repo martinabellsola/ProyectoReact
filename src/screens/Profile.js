@@ -4,6 +4,8 @@ import { auth, db } from "../firebase/config";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CardProfile from "../components/CardProfile"
 
+import CameraProfile from '../components/CameraProfile'
+
 class Profile extends Component{
     
   constructor(props) {
@@ -11,8 +13,8 @@ class Profile extends Component{
       this.state = {
         post: [],
         loading: true,
-        showModal: false, 
-        showModalPhoto: false
+        showModal: false,
+        showCamera: true
       }
     }
 
@@ -47,7 +49,14 @@ class Profile extends Component{
         showModal: false
       })
     }
-     
+
+    onImageUpload(url){
+      this.setState({
+        url: url, 
+        showCamera: false
+      })
+    }
+    
     render() {
         return (
           <View style={{backgroundColor: "#fcfafa"}}>
@@ -58,7 +67,7 @@ class Profile extends Component{
                 <View style={styles.containerData}>
                   <Image 
                     style={{width: 77, height: 77, borderRadius:"50%", marginTop: 5}}
-                    source = {require("../../assets/user.png")}
+                    source = {auth.currentUser.photoURL}
                   />
                   <View>
                     <View style={styles.nameLog}>
@@ -87,7 +96,26 @@ class Profile extends Component{
                   animationType="fade"
                   transparent={true}
                 >
-                  <Text>Fotito perfil</Text>
+                  {this.state.showCamera ?
+                  <View style={styles.modalView}> 
+                    <View style={styles.modalInfo}> 
+                      <View style={styles.menuLike}>
+                      <CameraProfile onImageUpload={(url)=> this.onImageUpload(url)} />
+                        <TouchableOpacity style={{marginLeft: 100}} onPress={() => this.closeModal()}>
+                          <Icon size={20} name="times" />
+                        </TouchableOpacity>
+                      </View>
+                      <Text>——————————————</Text>
+                    </View>
+                  </View>  
+                    : 
+                    <View style={styles.modalView}>
+                    <Text> ¡Tu foto de perfil fue cambiada exitosamente!</Text>
+                    <TouchableOpacity onPress={() => this.closeModal()}> 
+                      <Text> Apreta para volver al perfil </Text>
+                    </TouchableOpacity>
+                    </View>
+                    }
                 </Modal>
                 }
 
@@ -186,6 +214,10 @@ const styles = StyleSheet.create({
     display: "flex", 
     flexDirection: "coloumn",
     marginTop: 5, 
+  },
+  modalView: {
+    backgroundColor: "rgba(52,52,52,0.70)",
+    height: "100%", 
   },
 });
 export default Profile;
