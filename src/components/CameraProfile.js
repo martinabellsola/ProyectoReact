@@ -1,7 +1,6 @@
 import React, {Component} from 'react'; 
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image, Modal } from "react-native";
 import { db, auth, storage} from "../firebase/config";
-import firebase from 'firebase';
 import { Camera } from 'expo-camera';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -56,11 +55,9 @@ class myCamera extends Component {
                                 user.updateProfile({
                                     photoURL: url
                                 }).then(() => {
-                                    console.log('funciona!');
-                                    this.closeModal()
+                                    console.log("change")
                                 }).catch((error) => {
-                                    console.log('no funciona :(');
-                            
+                                    console.log(error)
                                 });  
                     })
                 })
@@ -74,7 +71,7 @@ class myCamera extends Component {
             photo: "", 
             showCamera: true,
         })
-        this.props.Props.navigation.navigate("Home")
+        this.props.drawerProps.navigation.navigate("Home")
     }
 
     openModal(){
@@ -108,7 +105,7 @@ class myCamera extends Component {
                             style={styles.modalContainer}
                             visible={this.state.showModal}
                             animationType="fade"
-                            transparent={true}
+                            transparent={false}
                         >
                             <View style={styles.modalView}> 
                             <View style={styles.modalInfo}> 
@@ -124,9 +121,9 @@ class myCamera extends Component {
                             </View>  
                         </Modal>
                         }
-                            <Text style={{fontWeight:600, fontSize: 14}}> Actualizá tu foto de perfil! </Text>
+                            <Text style={{fontWeight:600, fontSize: 14}}> Crea una nueva publicación </Text>
                         <TouchableOpacity onPress={()=>this.savePhoto()}>
-                            <Text style={{color:"#0095f6", fontWeight:400, fontSize: 14}}> Actualizar</Text>
+                            <Text style={{color:"#0095f6", fontWeight:400, fontSize: 14}}> Compartir</Text>
                         </TouchableOpacity>
                      </View>
                      <Image 
@@ -135,16 +132,16 @@ class myCamera extends Component {
                      />
                     </>
                 : 
-                    <>
+                <>
                     <Camera 
-                        style={{flex: 3, width:"100%", position: "absolute", height:"100%"}}
+                        style={{flex: 3, width:"100%", position:"absolute", height:"100%"}}
                         type={Camera.Constants.Type.front}
                         ref={(cam)=> (this.camera = cam)}
                     /> 
                     <TouchableOpacity  style={{flex: 1, width:"100%"}} onPress={()=> this.takePicture()}>    
-                        <Icon size={50} style={{color:"white", position: "relative", marginHorizontal:"auto", marginVertical:"120%"}} name="circle" solid/>
+                        <Icon size={50} style={{color:"white", position:"relative", marginHorizontal:"auto", marginTop:"120%"}} name="circle" solid/>
                     </TouchableOpacity>
-                    </>
+                </>
                 }
                 
             </>

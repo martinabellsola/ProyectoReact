@@ -68,7 +68,6 @@ class Card extends Component {
   };
 
   comment(com){
-
     let comentario = {text: com, user: auth.currentUser.email, date: moment().format('ll'), keydate: Date.now()}
     db.collection("posteos").doc(this.props.id).update({
       comments: firebase.firestore.FieldValue.arrayUnion(comentario)
@@ -109,9 +108,8 @@ class Card extends Component {
 
   borrar(id){ 
   db.collection("posteos").doc(id).delete().then(()=>{
-    console.log("se borró re piola")
-  })
-  .catch((err)=> {
+    console.log("se borro")
+  }).catch((err)=> {
     console.log(err)
   })};
 
@@ -128,15 +126,8 @@ class Card extends Component {
   render() {
     return (
       <View style={styles.container}>
-    
         <View style={styles.userNameFrame}>
-          <View style={styles.userNameFoto}>
-            <Image 
-              style={{width: 32, height: 32, borderRadius:"50%"}}
-              source = {require("../../assets/user.png")}
-            />
             <Text style={styles.userName}> {this.props.post.user} </Text>
-          </View>
             { this.props.post.mail === auth.currentUser.email 
               ? <>
                 <TouchableOpacity onPress={()=>this.openModalX()}>
@@ -265,18 +256,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold", 
     fontSize: 15, 
     marginTop: 5,
-    marginLeft: 6,
   },
   userNameFrame: {
     display: "flex", 
     flexDirection: "row",
     justifyContent: "space-between", 
     marginBottom: 5,
-  },
-  userNameFoto: {
-    display: "flex", 
-    flexDirection: "row",
-    justifyContent: "flex-start", 
   },
   menuLike: {
     display: "flex", 
@@ -306,7 +291,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white", 
     marginBottom: 10, 
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
+    marginTop: 10,
   },
   photo:{
     height: 300,
@@ -340,13 +326,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 35,
     alignItems: "center",
-  },
-  closeModal:{
-    alignSelf: 'flex-end',
-    padding: 10,
-    backgroundColor: '#dc3545',
-    marginTop:2,
-    borderRadius: 4,
   },
 });
 

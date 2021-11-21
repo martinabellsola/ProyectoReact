@@ -107,13 +107,16 @@ class Menu extends Component {
                     <Drawer.Navigator> 
                     {(this.state.loggedIn === false) ? (
                         <>
-                            <Drawer.Screen name="Login" component={(drawerProps) => <Login drawerProps={drawerProps} error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
+                            <Drawer.Screen 
+                                name="Login" 
+                                component={(drawerProps) => <Login drawerProps={drawerProps} error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
                             <Drawer.Screen name="Register" component={(drawerProps)=><Register drawerProps={drawerProps} error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} />
                         </>
                         ) : (
                         <>
                             <Drawer.Screen 
                                 name="Home" 
+                                options= {{drawerIcon: config => <Icon size={23} name="lock"/>, unmountOnBlur: true}}
                                 options={{drawerIcon: config => <Icon size={23} name="home"/>}}
                                 component={()=><Home loading={this.state.loading} />} />
                             <Drawer.Screen 
@@ -122,7 +125,7 @@ class Menu extends Component {
                                 component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
                             <Drawer.Screen 
                                 name="Profile"
-                                options= {{drawerIcon: config => <Icon size={23} name="user"/>}}
+                                options= {{drawerIcon: config => <Icon size={23} name="user"/>, unmountOnBlur: true}}
                                 component={(drawerProps)=><Profile userData={this.state.userData} signOut ={() => this.signOut() } drawerProps={drawerProps}/>}/>
                             <Drawer.Screen 
                                 name="Search" 

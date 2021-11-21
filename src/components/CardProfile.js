@@ -123,16 +123,10 @@ class CardProfile extends Component {
                 <View style={styles.modalView}>
                     <View style={styles.modalInfo}>  
                         <View style={styles.userNameFrame}>
-                            <View style={styles.userNameFoto}>
-                                <Image 
-                                    style={{width: 32, height: 32, borderRadius:"50%"}}
-                                    source = {auth.currentUser.photoURL}
-                                />
-                                <Text style={styles.userName}> {this.props.post.user} </Text>
-                                <TouchableOpacity onPress={()=> this.closeModalPhoto()} > 
-                                    <Icon style={{color:"#8e8e8e", paddingLeft: 92, paddingTop: 5}}  size={15} name="arrow-right" solid />
-                                </TouchableOpacity>        
-                            </View>
+                            <Text style={styles.userName}> {this.props.post.user} </Text>
+                            <TouchableOpacity onPress={()=> this.closeModalPhoto()} > 
+                              <Icon style={{color:"#8e8e8e", paddingLeft: 125, paddingTop: 5}}  size={15} name="arrow-right" solid />
+                            </TouchableOpacity>        
                         </View>
 
                         <Image style={styles.photo} source={this.props.photo}/>
@@ -202,7 +196,6 @@ const styles = StyleSheet.create({
       fontWeight: "bold", 
       fontSize: 15, 
       marginTop: 5,
-      marginLeft: 6,
     },
     userNameFrame: {
       display: "flex", 
@@ -211,12 +204,6 @@ const styles = StyleSheet.create({
       marginBottom: 6,
       marginLeft: 10, 
       marginTop: 6,
-    },
-    userNameFoto: {
-      display: "flex", 
-      flexDirection: "row",
-      justifyContent: "flex-start", 
-      alignItems:"center"
     },
     menuLike: {
       display: "flex", 

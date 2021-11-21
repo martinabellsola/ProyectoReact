@@ -95,26 +95,16 @@ class Profile extends Component{
                   animationType="fade"
                   transparent={true}
                 >
-                  {this.state.showCamera ?
-                  <View style={styles.modalView}> 
-                    <View style={styles.modalInfo}> 
-                      <View style={styles.menuLike}>
-                      <CameraProfile onImageUpload={(url)=> this.onImageUpload(url)} />
-                        <TouchableOpacity style={{marginLeft: 100}} onPress={() => this.closeModal()}>
-                          <Icon size={20} name="times" />
-                        </TouchableOpacity>
-                      </View>
-                      <Text>——————————————</Text>
-                    </View>
-                  </View>  
-                    : 
+                  { this.state.showCamera ?
+                    <CameraProfile onImageUpload={(url)=> this.onImageUpload(url)} drawerProps={this.props.drawerProps}  />
+                  : 
                     <View style={styles.modalView}>
-                    <Text> ¡Tu foto de perfil fue cambiada exitosamente!</Text>
-                    <TouchableOpacity onPress={() => this.closeModal()}> 
-                      <Text> Apreta para volver al perfil </Text>
-                    </TouchableOpacity>
+                      <Text> ¡Tu foto de perfil fue cambiada exitosamente!</Text>
+                      <TouchableOpacity onPress={() => this.closeModal()}> 
+                        <Text> Apreta para volver al perfil </Text>
+                      </TouchableOpacity>
                     </View>
-                    }
+                  }
                 </Modal>
                 }
 
@@ -151,17 +141,8 @@ class Profile extends Component{
         );
       }
 }
+
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "red",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    textAlign: "center",
-    borderRadius: 4,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "red",
-  },
   containerData:{
     display: "flex", 
     flexDirection: "row",
@@ -184,9 +165,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#dbdbdb",
     marginTop: 10
-  },
-  textButton: {
-    color: "#fff",
   },
   descrip: {
     display: "flex", 

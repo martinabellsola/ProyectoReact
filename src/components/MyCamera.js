@@ -90,12 +90,20 @@ class myCamera extends Component {
                 {
                     this.state.showCamera === false ? 
                     <>
-                     <View style={styles.menu}>
-
-                        <TouchableOpacity onPress={()=> this.openModal()}>
-                            <Icon size={16} name="arrow-left" solid/>
-                        </TouchableOpacity>
-
+                     <View style={styles.container}>
+                        <Text style={{fontWeight:600, fontSize: 15, marginTop: 10}}> Crea una nueva publicación </Text>
+                        <Image 
+                            style={{width: "80%", flex: 1, marginTop: 10}}
+                            source = {{uri: this.state.photo}}
+                        /> 
+                        <View style={styles.menu}>
+                            <TouchableOpacity onPress={()=>this.openModal()}>
+                                <Icon size={23} name="times-circle"/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{marginLeft: 170}} onPress={()=>this.savePhoto()}>
+                                <Icon size={23} name="share"/>
+                            </TouchableOpacity>
+                        </View>
                         { ! this.state.showModal ? 
                             null
                         :
@@ -119,15 +127,8 @@ class myCamera extends Component {
                             </View>  
                         </Modal>
                         }
-                            <Text style={{fontWeight:600, fontSize: 14}}> Crea una nueva publicación </Text>
-                        <TouchableOpacity onPress={()=>this.savePhoto()}>
-                            <Text style={{color:"#0095f6", fontWeight:400, fontSize: 14}}> Compartir</Text>
-                        </TouchableOpacity>
                      </View>
-                     <Image 
-                        style={{width: "100%", height:350}}
-                        source = {{uri: this.state.photo}}
-                     />
+                    
                     </>
                 : 
                     <>
@@ -150,14 +151,11 @@ class myCamera extends Component {
 export default myCamera
 
 const styles = StyleSheet.create({
-    menu: {
+    container: {
         display: "flex", 
-        flexDirection: "row",
-        justifyContent: "space-between", 
-        marginBottom: 5,
-        marginTop: 5, 
-        marginLeft: 2, 
-        marginRight: 2,
+        flex: 1,
+        justifyContent: "center", 
+        alignItems: "center"
     },
     modalView: {
         backgroundColor: 'rgba(52, 52, 52, 0.70)',
@@ -172,4 +170,9 @@ const styles = StyleSheet.create({
         padding: 35,
         alignItems: "center",
     },
+    menu: {
+        display: "flex", 
+        flexDirection: "row", 
+        marginTop: 10
+    }
 });
