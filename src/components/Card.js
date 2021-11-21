@@ -22,6 +22,7 @@ class Post extends Component {
   
   componentDidMount(){
     this.recieveLikes();
+    console.log(this.props)
   }
 
   recieveLikes(){
@@ -69,7 +70,7 @@ class Post extends Component {
 
   comment(com){
 
-    let comentario = {text: com, user: auth.currentUser.email, date: moment().format('LLLL')}
+    let comentario = {text: com, user: auth.currentUser.email, date: moment().format('ll'), keydate: Date.now()}
     db.collection("posteos").doc(this.props.id).update({
       comments: firebase.firestore.FieldValue.arrayUnion(comentario)
     }).then(()=>{
@@ -175,7 +176,7 @@ class Post extends Component {
         </View>
 
         <TouchableOpacity onPress={() => this.openModalComents()}>
-          {this.props.post.comments.length === 0 ? 
+        {this.props.post.comments.length === 0 ? 
               <Text style={{color: "#8e8e8e", marginBottom:4,}}> Todavía no hay comentarios, se el primero! </Text>
             : this.props.post.comments.length === 1 ? 
               <Text style={{color: "#8e8e8e", marginBottom:4,}}> Ver {this.props.post.comments.length} comentario </Text>
@@ -297,15 +298,16 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   container:{
-    marginTop: 20,
     paddingVertical:15,
     paddingHorizontal: 10,
     borderWidth:1,
     borderColor: '#ccc',
     borderStyle: 'solid',
     borderRadius: 6,
-    marginVertical:10,
-    backgroundColor: "white"
+    backgroundColor: "white", 
+    marginBottom: 10, 
+    marginLeft: 5,
+    marginRight: 5
   },
   photo:{
     height: 300,

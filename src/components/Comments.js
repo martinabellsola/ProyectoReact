@@ -1,9 +1,11 @@
 import React, {Component} from 'react'; 
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
+import { Text,ScrollView, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
 import { db, auth, storage} from "../firebase/config";
 import firebase from 'firebase';
 import moment from 'moment';
 
+
+ 
 class Comments extends Component {
     constructor(props){
         super(props); 
@@ -49,16 +51,20 @@ class Comments extends Component {
                />
                <TouchableOpacity onPress={()=>this.props.comentar(this.state.comentario)}> <Text>Comentar</Text></TouchableOpacity>
                {(this.state.comentarios.length !== 0)?(
+                 
                     <FlatList style={styles.FlatList}
                         data={this.state.comentarios}
-                        keyExtractor={(comentario) => comentario.date.toString()}
-                        renderItem={({item}) => (
+                        keyExtractor={(comentario) => comentario.keydate.toString()}
+                        renderItem={({item}) => ( 
+                      
+                        <View style={styles.wrap}>
                         <View style={styles.container}>
                         <Text style={{fontWeight: 'bold' }}>{item.user}</Text> 
                         <Text>{item.text} </Text>
-                        
                         <Text style={{textAlign: 'right', opacity: 0.5 }}>{item.date}</Text>
                         </View>
+                        </View> 
+                      
                     )}
                     />
                 ):(
@@ -72,7 +78,7 @@ class Comments extends Component {
 
 const styles = StyleSheet.create({
     FlatList: {
-      color: 'black'
+      color: 'black',
     },
     container:{
         marginTop: 20,
@@ -84,6 +90,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         marginVertical:10,
         backgroundColor: 'rgba(242, 243, 245, 1)',
+        flexShrink:1,
         
       },
       inputContainer:{
@@ -95,8 +102,13 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderRadius: 6,
         marginVertical:10,
-        backgroundColor: 'rgba(242, 243, 245, 0,7)'
+        backgroundColor: 'rgba(242, 243, 245, 0,7)',
+        
       },
+      wrap:{
+        flexDirection: "row"
+      }
+     
 });
 
 export default Comments

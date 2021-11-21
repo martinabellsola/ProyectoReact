@@ -11,12 +11,10 @@ class Search extends Component {
     this.state = {
       post: [],
       loading: true,
-      result: ''
+      result: '', 
+      searchDone: false,
+      isActive: false
     };
-  }
-
-  componentDidMount(){
-    this.showPost();
   }
 
   showPost(){
@@ -31,36 +29,45 @@ class Search extends Component {
       this.setState({
         post: post,
         loading: false,
+        searchDone: true
       })
+    })
+  }
+
+  onFocus(){
+    this.setState({
+      isActive: true
     })
   }
 
   render() {
     return (
-      <View>
-          
-         <TextInput 
+      <View> 
+        <View style={styles.searchContainer}> 
+          <TextInput 
+            style={{flex:2}}
             onChangeText={(txt)=>this.setState({result:txt})} 
             placeholder="¡Buscá el post mediante email!" 
             keyboardType="email-address"
-        />
-        <TouchableOpacity onPress={()=>this.showPost()}> 
-                        <Icon size={23} name="search"/>
-                    </TouchableOpacity>
-
+          />
+          <TouchableOpacity onPress={()=>this.showPost()}> 
+            <Icon style={{flex:1, color: "#cccccc",}} size={23} name="search"/>
+          </TouchableOpacity>
+        </View>
         
-            {(this.state.loading === true) ? <ActivityIndicator size="large" color="pink" /> : 
-                this.state.post.length == 0 ? 
-                <Text>¡No se han encontrado posteos para tu busqueda, probá con otro usuario!</Text>
-                :
-                <FlatList
-                    data={this.state.post}
-                    keyExtractor={(post) => post.id.toString()}
-                    renderItem={({item}) => (
-                        <Card post={item.data} id={item.id} photo={item.photo} />
-                    )}
-                />
-            }
+        { this.state.searchDone ? 
+          this.state.post.length == 0 ? 
+            <Text style={{marginLeft: 8, marginRight: 8, textAlign: "center", fontSize: 14, fontWeight:600, marginTop: 10,}}>¡No se han encontrado posteos para tu busqueda, probá con otro usuario!</Text>
+          :
+            <FlatList
+              data={this.state.post}
+              keyExtractor={(post) => post.id.toString()}
+              renderItem={({item}) => (
+                <Card post={item.data} id={item.id} photo={item.photo} />
+              )}
+            />
+          : null
+        }
           
       </View>
     );
@@ -68,28 +75,21 @@ class Search extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#28A745",
+  searchContainer: {
     paddingHorizontal: 10,
     paddingVertical: 6,
-    textAlign: "center",
-    borderRadius: 4,
+    borderRadius: 50,
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: "#28A745",
+    display: "flex", 
+    flexDirection: "row", 
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+    borderColor: "#dbdbdb",
+    marginTop: 10,
+    marginLeft: 8,
+    marginRight: 8,
+  
   },
-  textButton: {
-    color: "#fff",
-  },
-  formContainer:{
-    marginTop: 20,
-    paddingVertical:15,
-    paddingHorizontal: 10,
-    borderWidth:1,
-    borderColor: '#ccc',
-    borderStyle: 'solid',
-    borderRadius: 6,
-    marginVertical:10,
-},
 });
 export default Search;
