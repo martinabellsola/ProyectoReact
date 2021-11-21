@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 
 import { db, auth } from "../firebase/config";
 
@@ -33,7 +32,8 @@ class Menu extends Component {
             if (user !== null) {
                 this.setState({
                     loggedIn: true,
-                    loading: false
+                    loading: false, 
+                    userData: user
                 })
             } else{
                 this.setState({
@@ -42,8 +42,7 @@ class Menu extends Component {
                 })
             }
         })
-    }
-
+    };
 
     register(email, userName, password, url) {
         auth
@@ -89,6 +88,7 @@ class Menu extends Component {
             this.setState({
                 loggedIn: false, 
                 loading: false,
+                userData: null,
             })
         })
         .catch((err) => {
@@ -100,11 +100,11 @@ class Menu extends Component {
 
     render() {
         return( 
-            (this.state.loading === true) ? (
+            (this.state.loading) ? (
                 <ActivityIndicator size="large" color="purple"/> 
             ):(
                 <NavigationContainer>
-                    <Drawer.Navigator>
+                    <Drawer.Navigator> 
                     {(this.state.loggedIn === false) ? (
                         <>
                             <Drawer.Screen name="Login" component={(drawerProps) => <Login drawerProps={drawerProps} error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />

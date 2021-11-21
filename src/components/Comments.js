@@ -60,7 +60,7 @@ class Comments extends Component {
                         <View style={styles.wrap}>
                         <View style={styles.container}>
                         <Text style={{fontWeight: 'bold' }}>{item.user}</Text> 
-                        <Text>{item.text} </Text>
+                        <Text numberOfLines={1}>{item.text} </Text>
                         <Text style={{textAlign: 'right', opacity: 0.5 }}>{item.date}</Text>
                         </View>
                         </View> 
