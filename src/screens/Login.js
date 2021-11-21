@@ -12,6 +12,10 @@ class Login extends Component {
     };
   }
 
+  NavigateToRegister(){
+    this.props.drawerProps.navigation.navigate('Register')
+  }
+
   render() {
     return (
       <View>
@@ -27,6 +31,7 @@ class Login extends Component {
           keyboardType="email-address"
           secureTextEntry={true}
         />
+
         {(this.state.email !== '' && this.state.password !== '') ? (
           <TouchableOpacity
           style={styles.button}
@@ -41,6 +46,11 @@ class Login extends Component {
             <Text style={styles.textButton}>Login</Text>
           </TouchableOpacity> 
         )} 
+
+      <TouchableOpacity onPress={()=> this.NavigateToRegister()}>
+        <Text> ¿No tenes una sesión? Registate! </Text>
+        </TouchableOpacity>
+
       </View>
     );
   }

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+
 
 import { db, auth } from "../firebase/config";
 
@@ -14,7 +15,7 @@ import Register from '../screens/Register';
 import Search from '../screens/Search'
 
 
-const Drawer = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 class Menu extends Component {
     constructor(){
@@ -103,30 +104,21 @@ class Menu extends Component {
                 <ActivityIndicator size="large" color="purple"/> 
             ):(
                 <NavigationContainer>
-                    <Drawer.Navigator  
-                        screenOptions={{
-                            headerShown: false,
-                        }} 
-                        tabBarOptions={{
-                            activeBackgroundColor: "pink",
-                            inactiveBackgroundColor: '#8e8e8e',
-                            activeTintColor: '#8e8e8e',
-                            showLabel: false,
-                        }}> 
+                    <Drawer.Navigator>
                     {(this.state.loggedIn === false) ? (
                         <>
-                            <Drawer.Screen name="Login" component={() => <Login  error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
-                            <Drawer.Screen name="Register" component={()=><Register error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} />
+                            <Drawer.Screen name="Login" component={(drawerProps) => <Login drawerProps={drawerProps} error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
+                            <Drawer.Screen name="Register" component={(drawerProps)=><Register drawerProps={drawerProps} error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} />
                         </>
                         ) : (
                         <>
                             <Drawer.Screen 
                                 name="Home" 
-                                options={{tabBarIcon: config => <Icon size={23} name="home"/>}}
+                                options={{drawerIcon: config => <Icon size={23} name="home"/>}}
                                 component={()=><Home loading={this.state.loading} />} />
                             <Drawer.Screen 
                                 name="Post" 
-                                options= {{tabBarIcon: config => <Icon size={23} name="plus"/>, unmountOnBlur: true}}
+                                options= {{drawerIcon: config => <Icon size={23} name="plus"/>, unmountOnBlur: true}}
                                 component={(drawerProps)=><Post drawerProps={drawerProps}/>} />
                             <Drawer.Screen 
                                 name="Profile"
@@ -134,7 +126,7 @@ class Menu extends Component {
                                 component={(drawerProps)=><Profile signOut ={() => this.signOut() } drawerProps={drawerProps}/>}/>
                             <Drawer.Screen 
                                 name="Search" 
-                                options= {{tabBarIcon: config => <Icon size={23} name="search"/>, unmountOnBlur: true}}
+                                options= {{drawerIcon: config => <Icon size={23} name="search"/>, unmountOnBlur: true}}
                                 component={()=><Search />} />
                         </>
                     )}
