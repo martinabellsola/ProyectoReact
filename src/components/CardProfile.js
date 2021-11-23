@@ -155,11 +155,10 @@ class CardProfile extends Component {
                                 animationType="fade"
                                 transparent={false}
                             >
-                                <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
-                                    <Text> X </Text>
-                                </TouchableOpacity>
-                            
-                                <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
+                              <TouchableOpacity onPress={() => this.closeModalComents()}>
+                                <Icon style={{marginLeft: 290, marginTop: 10}} size={20} name="times" />
+                              </TouchableOpacity>
+                              <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
                             </Modal>
                             }
                         </View>
@@ -216,13 +215,6 @@ const styles = StyleSheet.create({
       marginBottom: 6,
       marginTop: 6, 
       marginLeft: 10, 
-    },
-    closeModal:{
-      alignSelf: 'flex-end',
-      padding: 10,
-      backgroundColor: '#dc3545',
-      marginTop:2,
-      borderRadius: 4,
     },
 });
 

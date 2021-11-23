@@ -46,8 +46,8 @@ class myCamera extends Component {
         fetch(this.state.photo)
         .then((res)=> res.blob())
             .then((image)=> {
-                const ref = storage.ref(`photos/${Date.now()}.jpg`) //no existe pero te lo crea 
-                ref.put(image) //metodo put de firebase
+                const ref = storage.ref(`photos/${Date.now()}.jpg`)
+                ref.put(image)
                 .then(()=> {
                     ref.getDownloadURL() 
                     .then((url)=> {

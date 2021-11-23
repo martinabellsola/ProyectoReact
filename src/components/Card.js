@@ -188,10 +188,9 @@ class Card extends Component {
               animationType="fade"
               transparent={false}
             >
-              <TouchableOpacity onPress={() => this.closeModalComents()} style={styles.closeModal}>
-                <Text> X </Text>
+              <TouchableOpacity onPress={() => this.closeModalComents()}>
+                <Icon style={{marginLeft: 290, marginTop: 10}} size={20} name="times" />
               </TouchableOpacity>
-              
               <Comments comentar= {(com)=>this.comment(com)}  listaComentarios= {this.props.post.comments} id={this.props.id} />
             </Modal>
         }

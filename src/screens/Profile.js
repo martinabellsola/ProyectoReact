@@ -109,7 +109,7 @@ class Profile extends Component{
                 </Modal>
                 }
 
-                <Text  style={{marginLeft: 10, color: "#8e8e8e", marginRight: 10, textAlign: "center"}}>————————————————————</Text>
+                <Text style={{marginLeft: 10, color: "#8e8e8e", marginRight: 10, textAlign: "center"}}>————————————————————</Text>
                 <View style={{marginLeft: 18}} >
                   <View style={styles.descrip}>
                     <Text style={{fontWeight:600, color: "#262626"}}>Contacto:</Text>   

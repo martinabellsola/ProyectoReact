@@ -19,8 +19,6 @@ class Comments extends Component {
 
     componentDidMount() {
         this.getComments()
-        
-       
     }
 
     componentDidUpdate() {
@@ -36,20 +34,19 @@ class Comments extends Component {
         })
         .catch(err => console.log(err))
     }
-   
-      
 
     render(){
         return (
-           <View >
+           <View>
                <TextInput 
-               style={styles.inputContainer}
-               keyboardType='default' 
-               placeholder='Agrega tu comentario'  
-               onChangeText={(com)=>this.setState({comentario: com })}
-               multiline
-               />
+                    style={styles.inputContainer}
+                    keyboardType='default' 
+                    placeholder='Agrega tu comentario'  
+                    onChangeText={(com)=>this.setState({comentario: com })}
+                    multiline
+                />
                <TouchableOpacity style={styles.botonComentar} onPress={()=>this.props.comentar(this.state.comentario)}> <Text>Comentar</Text></TouchableOpacity>
+               
                {(this.state.comentarios.length !== 0)?(
                  
                     <FlatList style={styles.FlatList}
@@ -58,17 +55,17 @@ class Comments extends Component {
                         renderItem={({item}) => ( 
                       
                         <View style={styles.wrap}>
-                        <View style={styles.container}>
-                        <Text style={{fontWeight: 'bold' }}>{item.user}</Text> 
-                        <Text numberOfLines={1}>{item.text} </Text>
-                        <Text style={{textAlign: 'right', opacity: 0.5 }}>{item.date}</Text>
-                        </View>
+                            <View style={styles.container}>
+                                <Text style={{fontWeight: 'bold' }}>{item.user}</Text> 
+                                <Text numberOfLines={1}>{item.text} </Text>
+                                <Text style={{textAlign: 'right', opacity: 0.5 }}>{item.date}</Text>
+                            </View>
                         </View> 
                       
                     )}
                     />
                 ):(
-                    <Text> Todavía no hay comentarios, se el primero! </Text>
+                    <Text style={{color: "#8e8e8e", margin: "auto", marginTop: 150}}> Todavía no hay comentarios, se el primero! </Text>
                 )
             }               
            </View>
@@ -90,25 +87,26 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         marginVertical:10,
         backgroundColor: 'rgba(242, 243, 245, 1)',
-        flexShrink:1,
-        
-      },
-      inputContainer:{
+        flexShrink: 1,
+        marginLeft: 5
+    },
+    inputContainer:{
         marginTop: 20,
         paddingVertical:15,
         paddingHorizontal: 10,
-        borderWidth:1,
+        borderWidth: 1,
         borderColor: '#ccc',
         borderStyle: 'solid',
-        borderRadius: 6,
+        borderRadius: 10,
         marginVertical:10,
         backgroundColor: 'rgba(242, 243, 245, 0,7)',
-        
-      },
-      wrap:{
+        marginLeft: 5, 
+        marginRight: 5
+    },
+    wrap:{
         flexDirection: "row"
-      },
-      botonComentar:{
+    },
+    botonComentar:{
         backgroundColor: "transparent",
         paddingHorizontal: 9,
         paddingVertical: 5,
@@ -117,9 +115,9 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderStyle: "solid",
         borderColor: "#dbdbdb",
-        marginTop: 10,
         marginLeft: 160,
-      }
+        marginRight: 5
+    }
      
 });
 
