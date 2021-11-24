@@ -35,9 +35,9 @@ class Home extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: "#fcfafa"}}>
+      <View style={{backgroundColor: "#fcfafa", height: "600"}}>
         { this.state.loading 
-          ? <ActivityIndicator size="large" color="pink" /> 
+          ? <ActivityIndicator  style={{marginTop: "70%", marginBottom: "70%"}} size="large" color="blue" /> 
           : <FlatList
               data={this.state.post}
               keyExtractor={(post) => post.id.toString()}

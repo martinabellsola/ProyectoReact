@@ -101,7 +101,7 @@ class Menu extends Component {
     render() {
         return( 
             (this.state.loading) ? (
-                <ActivityIndicator size="large" color="purple"/> 
+                <ActivityIndicator style={{margin: "auto"}} size="large" color="blue"/> 
             ):(
                 <NavigationContainer>
                     <Drawer.Navigator> 
