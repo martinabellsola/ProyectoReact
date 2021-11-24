@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import { Text,ScrollView, View, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, FlatList, Image } from "react-native";
 import { db, auth, storage} from "../firebase/config";
 import firebase from 'firebase';
-import moment from 'moment';
-
-
  
 class Comments extends Component {
     constructor(props){
@@ -12,7 +9,7 @@ class Comments extends Component {
         this.state = {
             comentario: '',
             comentarios:[],
-            Fechacom:""
+            Fechacom: ""
         }
     
     }
@@ -45,7 +42,13 @@ class Comments extends Component {
                     onChangeText={(com)=>this.setState({comentario: com })}
                     multiline
                 />
-               <TouchableOpacity style={styles.botonComentar} onPress={()=>this.props.comentar(this.state.comentario)}> <Text>Comentar</Text></TouchableOpacity>
+                
+               <TouchableOpacity  
+                    disabled={this.state.comentario.length === 0 ? true : false }
+                    style={styles.botonComentar} 
+                    onPress={()=>this.props.comentar(this.state.comentario)}> 
+                    <Text>Comentar</Text>
+                </TouchableOpacity>
                
                {(this.state.comentarios.length !== 0)?(
                  

@@ -51,7 +51,7 @@ class myCamera extends Component {
                     ref.getDownloadURL() 
                     .then((url)=> {
                         this.props.onImageUpload(url)
-                           const user = auth.currentUser;
+                            const user = auth.currentUser;
                             user.updateProfile({
                                 photoURL: url
                             }).then(() => {
@@ -119,16 +119,16 @@ class myCamera extends Component {
                             transparent={true}
                         >
                             <View style={styles.modalView}> 
-                            <View style={styles.modalInfo}> 
-                                <Text style={{fontSize: 15, fontWeight: 600}}> ¿Descartar publicación? </Text>
-                                <Text style={{fontSize: 15, fontWeight: 400, color:"#8e8e8e", marginTop: 12}}>Si sales, no se guardarán los cambios </Text>
-                                <TouchableOpacity onPress={() => this.cancelar()}>
-                                    <Text style={{fontSize: 15, fontWeight: 700, color: "#ed4956", marginTop: 18}}> Descartar </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.closeModal()}>
-                                    <Text style={{fontSize: 15, fontWeight: 400, marginTop: 10}}> Cancelar </Text>
-                                </TouchableOpacity>
-                            </View>
+                                <View style={styles.modalInfo}> 
+                                    <Text style={{fontSize: 15, fontWeight: 600}}> ¿Descartar publicación? </Text>
+                                    <Text style={{fontSize: 15, fontWeight: 400, color:"#8e8e8e", marginTop: 12}}>Si sales, no se guardarán los cambios </Text>
+                                    <TouchableOpacity onPress={() => this.cancelar()}>
+                                        <Text style={{fontSize: 15, fontWeight: 700, color: "#ed4956", marginTop: 18}}> Descartar </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.closeModal()}>
+                                        <Text style={{fontSize: 15, fontWeight: 400, marginTop: 10}}> Cancelar </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>  
                         </Modal>
                         }
