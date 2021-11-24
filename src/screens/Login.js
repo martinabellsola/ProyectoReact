@@ -74,7 +74,6 @@ class Login extends Component {
   },
   loginText:{
     color: "#fff",
-    fontFamily: 'Baskerville',
     fontSize: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -98,7 +97,6 @@ class Login extends Component {
       backgroundColor: "#E2F2F3",
     },
     titleText:{
-      fontFamily: 'Baskerville',
       fontSize: 37,
       alignItems: 'center',
       justifyContent: 'center',
@@ -106,7 +104,6 @@ class Login extends Component {
     },
     input: {
       width: 300,
-      fontFamily: 'Baskerville',
       fontSize: 20,
       height: 44,
       padding: 10,
@@ -117,7 +114,6 @@ class Login extends Component {
     },
     textnavigation: {
       marginTop: 10,
-      fontFamily: 'Baskerville',
       fontSize: 16,
     }
   });

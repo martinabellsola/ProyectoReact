@@ -24,6 +24,7 @@ class Menu extends Component {
             error: '',
             userData: {}, 
             loading: true,
+            errorLogin: '',
         };
     }
 
@@ -76,7 +77,7 @@ class Menu extends Component {
         })
         .catch((err) => {
             this.setState({
-                error: err.message
+                errorLogin: err.message
             })
         })
     }
@@ -109,15 +110,17 @@ class Menu extends Component {
                         <>
                             <Drawer.Screen 
                                 name="Login" 
-                                component={(drawerProps) => <Login drawerProps={drawerProps} error={this.state.error} login={(email, pass) => this.login(email,pass)} />} />
-                            <Drawer.Screen name="Register" component={(drawerProps)=><Register drawerProps={drawerProps} error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} />
+                                component={(drawerProps) => <Login drawerProps={drawerProps} error={this.state.errorLogin} login={(email, pass) => this.login(email,pass)} />} />
+                            <Drawer.Screen 
+                                name="Register" 
+                                component={(drawerProps)=><Register drawerProps={drawerProps} error={this.state.error} register={(email, userName, pass, url) => this.register(email, userName, pass, url)} />} 
+                            />
                         </>
                         ) : (
                         <>
                             <Drawer.Screen 
                                 name="Home" 
-                                options= {{drawerIcon: config => <Icon size={23} name="lock"/>, unmountOnBlur: true}}
-                                options={{drawerIcon: config => <Icon size={23} name="home"/>}}
+                                options={{drawerIcon: config => <Icon size={23} name="home"/>, unmountOnBlur: true}}
                                 component={()=><Home loading={this.state.loading} />} />
                             <Drawer.Screen 
                                 name="Post" 

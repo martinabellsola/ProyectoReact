@@ -14,6 +14,7 @@ class CardProfile extends Component {
         likes: 0, 
         liked: false,
         showModalPhoto: false,
+        showModalX: false,
     }
   }  
   
@@ -103,6 +104,23 @@ class CardProfile extends Component {
     }) 
   } 
 
+  borrar(id){ 
+    db.collection("posteos").doc(id).delete().then(()=>{
+      console.log("se borro")
+    }).catch((err)=> {
+      console.log(err)
+  })};
+  
+  openModalX(){
+    this.setState({
+      showModalX: true
+  })}
+  
+  closeModalX(){
+    this.setState({
+      showModalX: false
+  })}
+
   render() {
     return (
       <View>
@@ -124,8 +142,37 @@ class CardProfile extends Component {
                     <View style={styles.modalInfo}>  
                         <View style={styles.userNameFrame}>
                             <Text style={styles.userName}> {this.props.post.user} </Text>
+
+                            <TouchableOpacity onPress={()=>this.openModalX()}>
+                              <Icon style={{paddingLeft: 100, paddingTop: 5}} size={18} name="times"/>
+                            </TouchableOpacity>
+
+                            { ! this.state.showModalX ? 
+                                null
+                              :
+                                <Modal 
+                                style={styles.modalContainerBorrar}
+                                visible={this.state.showModal}
+                                animationType="fade"
+                                transparent={true}
+                                >
+                                <View style={styles.modalViewBorrar}> 
+                                  <View style={styles.modalInfoBorrar}> 
+                                    <Text style={{fontSize: 15, fontWeight: 600}}> ¿Descartar publicación? </Text>
+                                    <Text style={{fontSize: 15, fontWeight: 400, color:"#8e8e8e", marginTop: 12}}>Si sales, no se guardarán los cambios </Text>
+                                    <TouchableOpacity onPress={() => this.borrar(this.props.id)}>
+                                      <Text style={{fontSize: 15, fontWeight: 700, color: "#ed4956", marginTop: 18}}> Descartar </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.closeModalX()}>
+                                      <Text style={{fontSize: 15, fontWeight: 400, marginTop: 10}}> Cancelar </Text>
+                                    </TouchableOpacity>
+                                  </View>
+                                </View>  
+                              </Modal>
+                            }
+
                             <TouchableOpacity onPress={()=> this.closeModalPhoto()} > 
-                              <Icon style={{color:"#8e8e8e", paddingLeft: 125, paddingTop: 5}}  size={15} name="arrow-right" solid />
+                              <Icon style={{color:"#8e8e8e", paddingLeft: 18, paddingTop: 5}}  size={18} name="arrow-right" solid />
                             </TouchableOpacity>        
                         </View>
 
@@ -215,6 +262,25 @@ const styles = StyleSheet.create({
       marginBottom: 6,
       marginTop: 6, 
       marginLeft: 10, 
+    },
+    modalContainerBorrar: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22, 
+    },
+    modalViewBorrar: {
+      backgroundColor: "rgba(52,52,52,0.70)",
+      height: "100%", 
+    },
+    modalInfoBorrar: {
+      margin: "auto",
+      backgroundColor: "white",
+      height: "129", 
+      width: "80%",
+      borderRadius: 12,
+      padding: 35,
+      alignItems: "center",
     },
 });
 

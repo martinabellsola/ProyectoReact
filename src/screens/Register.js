@@ -82,7 +82,6 @@ class Register extends Component {
 
     input: {
       width: 300,
-      fontFamily: 'Baskerville',
       fontSize: 20,
       height: 44,
       padding: 10,
@@ -104,7 +103,6 @@ class Register extends Component {
     },
     textButton: {
       color: "#fff",
-      fontFamily: 'Baskerville',
       fontSize: 20,
       alignItems: 'center',
       justifyContent: 'center',
@@ -112,7 +110,6 @@ class Register extends Component {
     },
 
     titleText:{
-      fontFamily: 'Baskerville',
       fontSize: 25,
       alignItems: 'center',
       justifyContent: 'center',
@@ -158,7 +155,6 @@ class Register extends Component {
     },
     textnavigation: {
       marginTop: 10,
-      fontFamily: 'Baskerville',
       fontSize: 16,
     }
   });
