@@ -61,7 +61,7 @@ class Profile extends Component{
         return (
           <View style={{backgroundColor: "#fcfafa"}}>
             { this.state.loading === true ? 
-              <ActivityIndicator size="large" color="pink" /> 
+              <ActivityIndicator  style={{marginTop: "70%", marginBottom: "70%"}} size="large" color="blue" />
               :
               <View style={{marginTop: 10}} >
                 <View style={styles.containerData}>
