@@ -57,7 +57,6 @@ class Post extends Component {
                     value={this.state.description}
                     multiline={true}
                 />
-
                 <TouchableOpacity
                     style={styles.buttonProfilePicture}
                     onPress={() =>  this.submitPost()}>

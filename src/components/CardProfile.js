@@ -126,7 +126,7 @@ class CardProfile extends Component {
       <View>
         <View>
             <TouchableOpacity onPress={()=> this.openModalPhoto()}>
-                <Image style={{height: 145, width: 145, marginHorizontal: 5, marginVertical: 5}} source={this.props.photo}/>
+                <Image style={{height: 145, width: 145, marginHorizontal: 5, marginVertical: 5}} source={{uri: this.props.photo}}/>
             </TouchableOpacity>
         </View>
         { ! this.state.showModalPhoto ? 
@@ -176,7 +176,7 @@ class CardProfile extends Component {
                             </TouchableOpacity>        
                         </View>
 
-                        <Image style={styles.photo} source={this.props.photo}/>
+                        <Image style={styles.photo} source={{uri: this.props.photo}}/>
 
                         <View style={styles.action}>
                             { ! this.state.liked ?  

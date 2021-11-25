@@ -67,7 +67,7 @@ class Profile extends Component{
                 <View style={styles.containerData}>
                   <Image 
                     style={{width: 77, height: 77, borderRadius:"50%", marginTop: 5}}
-                    source = {this.props.userData.photoURL}
+                    source =  {{uri: this.props.userData.photoURL}}
                   />
                   <View>
                     <View style={styles.nameLog}>

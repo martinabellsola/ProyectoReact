@@ -42,6 +42,7 @@ class myCamera extends Component {
                 .catch((err)=> console.log(err))
     }
 
+    
     savePhoto(){
         fetch(this.state.photo)
         .then((res)=> res.blob())
