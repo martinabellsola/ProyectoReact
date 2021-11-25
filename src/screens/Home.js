@@ -42,7 +42,7 @@ class Home extends Component {
               data={this.state.post}
               keyExtractor={(post) => post.id.toString()}
               renderItem={({item}) => (
-                <Card post={item.data} id={item.id} photo={item.photo} />
+                <Card post={item.data} id={item.id} />
               )}
             />
           }
